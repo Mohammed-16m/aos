@@ -87,6 +87,7 @@ services:
     depends_on:
       - db_auth
       - consul
+    restart: on-failure
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.auth.rule=PathPrefix(`/auth`)"
@@ -108,6 +109,7 @@ services:
     depends_on:
       - db_restaurant
       - consul
+    restart: on-failure
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.restaurant.rule=PathPrefix(`/api/tables`)"
@@ -131,6 +133,7 @@ services:
       - db_reservation
       - rabbitmq
       - consul
+    restart: on-failure
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.reservation.rule=PathPrefix(`/api/reservations`)"
@@ -153,6 +156,7 @@ services:
       - db_notification
       - rabbitmq
       - consul
+    restart: on-failure
 
   # ─── Frontend ─────────────────────────────────────────────────────────────
   frontend:

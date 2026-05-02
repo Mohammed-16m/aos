@@ -4,54 +4,248 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TableVista — Register</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface2: #1a1a26;
+            --border: rgba(255,255,255,0.07);
+            --gold: #c9a84c;
+            --gold-dim: rgba(201,168,76,0.15);
+            --text: #f0ede8;
+            --text-muted: #8a8490;
+            --text-dim: #5a5560;
+            --red: #e05a5a;
+            --green: #5abf8a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        body::before, body::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.25;
+            pointer-events: none;
+        }
+        body::before {
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(201,168,76,0.4), transparent);
+            top: -150px; left: -150px;
+            animation: blobMove 8s ease-in-out infinite alternate;
+        }
+        body::after {
+            width: 400px; height: 400px;
+            background: radial-gradient(circle, rgba(90,143,224,0.3), transparent);
+            bottom: -100px; right: -100px;
+            animation: blobMove 10s ease-in-out infinite alternate-reverse;
+        }
+        @keyframes blobMove {
+            0%   { transform: translate(0, 0); }
+            100% { transform: translate(40px, 30px); }
+        }
+        .auth-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px 36px;
+            width: 420px;
+            max-width: 92vw;
+            position: relative;
+            z-index: 1;
+        }
+        .auth-logo { text-align: center; margin-bottom: 28px; }
+        .auth-logo .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            color: var(--gold);
+        }
+        .auth-logo .tagline {
+            font-size: 11px;
+            color: var(--text-dim);
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-top: 4px;
+        }
+        .auth-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 0 0 28px;
+        }
+        .auth-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            color: var(--text);
+            margin-bottom: 6px;
+        }
+        .auth-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 26px;
+        }
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .input-group { margin-bottom: 16px; }
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 7px;
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .input-group input::placeholder { color: var(--text-dim); }
+        .input-group input:focus {
+            border-color: rgba(201,168,76,0.5);
+            box-shadow: 0 0 0 3px rgba(201,168,76,0.08);
+        }
+        .auth-btn {
+            width: 100%;
+            padding: 13px;
+            background: linear-gradient(135deg, var(--gold), #a07828);
+            border: none;
+            border-radius: 10px;
+            color: #0a0a0f;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 8px;
+            transition: opacity 0.2s, transform 0.15s;
+        }
+        .auth-btn:hover { opacity: 0.9; transform: translateY(-1px); }
+        .auth-message {
+            font-size: 13px;
+            text-align: center;
+            margin-top: 14px;
+            min-height: 18px;
+            color: var(--red);
+        }
+        .auth-message.success { color: var(--green); }
+        .auth-footer {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .auth-footer a {
+            color: var(--gold);
+            text-decoration: none;
+            font-weight: 500;
+        }
+    </style>
 </head>
-<body class="auth-body">
+<body>
 
 <div class="auth-card">
-
     <div class="auth-logo">
         <div class="brand">TableVista</div>
         <div class="tagline">Reservation Platform</div>
     </div>
-
     <div class="auth-divider"></div>
-
     <div class="auth-title">Create account</div>
-<div class="auth-subtitle">Join TableVista and start booking tables</div>
+    <div class="auth-subtitle">Join TableVista and start booking tables</div>
 
-<div class="input-row">
+    <div class="input-row">
+        <div class="input-group">
+            <label>First Name</label>
+            <input type="text" id="first_name" placeholder="First name...">
+        </div>
+        <div class="input-group">
+            <label>Last Name</label>
+            <input type="text" id="last_name" placeholder="Last name...">
+        </div>
+    </div>
+
     <div class="input-group">
-        <label>First Name</label>
-        <input type="text" id="first_name" placeholder="Your first name...">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="Your email...">
     </div>
     <div class="input-group">
-        <label>Last Name</label>
-        <input type="text" id="last_name" placeholder="Your last name...">
+        <label>Password</label>
+        <input type="password" id="password" placeholder="••••••••">
+    </div>
+
+    <button class="auth-btn" onclick="register()">Create Account</button>
+    <p class="auth-message" id="message"></p>
+
+    <div class="auth-footer">
+        Already have an account? <a href="/auth/login.html">Sign in</a>
     </div>
 </div>
 
-<div class="input-group">
-    <label>Email</label>
-    <input type="email" id="email" placeholder="Your email...">
-</div>
+<script>
+    const API_URL = "/auth";
 
-<div class="input-group">
-    <label>Password</label>
-    <input type="password" id="password" placeholder="••••••••">
-</div>
+    function register() {
+        const first_name = document.getElementById("first_name").value.trim();
+        const last_name  = document.getElementById("last_name").value.trim();
+        const email      = document.getElementById("email").value.trim();
+        const password   = document.getElementById("password").value.trim();
+        const msg        = document.getElementById("message");
 
-<button class="auth-btn" onclick="register()">Create Account</button>
+        if (!first_name || !last_name || !email || !password) {
+            msg.textContent = "All fields are required";
+            return;
+        }
 
-<p class="auth-message" id="message"></p>
+        fetch(`${API_URL}/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ first_name, last_name, email, password })
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status === "success") {
+                localStorage.setItem("access",  data.data.access);
+                localStorage.setItem("refresh", data.data.refresh);
+                localStorage.setItem("role",    data.data.role);
+                localStorage.setItem("user_id", data.data.user_id);
+                msg.className = "auth-message success";
+                msg.textContent = "Account created! Redirecting...";
+                setTimeout(() => {
+                    window.location.href = "/auth/dashboard.html";
+                }, 1000);
+            } else {
+                msg.textContent = data.message || "Registration failed";
+            }
+        })
+        .catch(() => {
+            msg.textContent = "Connection error";
+        });
+    }
 
-<div class="auth-footer">
-    Already have an account? <a href="login.html">Sign in</a>
-</div>
-
-</div>
-
-<script src="app.js"></script>
-
+    document.addEventListener("keydown", function(e) {
+        if (e.key === "Enter") register();
+    });
+</script>
 </body>
 </html>

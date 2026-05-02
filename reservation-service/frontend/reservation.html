@@ -105,7 +105,8 @@
 
     <script>
         async function creerReservation() {
-            const token     = localStorage.getItem('token') || 'test_token';
+    
+            const token     = localStorage.getItem('access');
             const client_id = parseInt(localStorage.getItem('user_id')) || 1;
 
             const table_id    = document.getElementById('table_id').value;
