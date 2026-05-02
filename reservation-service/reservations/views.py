@@ -1,4 +1,5 @@
-import requests
+import jwt
+from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -9,20 +10,17 @@ from .rabbitmq_publisher import publier_message
 
 
 def valider_token(request):
-    token = request.headers.get('Authorization', '')
-    if not token:
+    auth_header = request.headers.get('Authorization', '')
+    if not auth_header.startswith('Bearer '):
         return None
+    token = auth_header.split(' ', 1)[1]
     try:
-        auth_url = config('AUTH_SERVICE_URL')
-        response = requests.get(
-            f"{auth_url}/auth/validate",
-            headers={'Authorization': token},
-            timeout=5
-        )
-        if response.status_code == 200:
-            return response.json().get('data')
+        secret = config('JWT_SECRET_KEY', default='secret-auth')
+        payload = jwt.decode(token, secret, algorithms=['HS256'])
+        return payload
+    except jwt.ExpiredSignatureError:
         return None
-    except Exception:
+    except jwt.InvalidTokenError:
         return None
 
 

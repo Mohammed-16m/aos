@@ -104,6 +104,17 @@
     </div>
 
     <script>
+        // ── Récupère le token depuis l'URL si redirigé depuis le dashboard ──
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('token')) {
+                localStorage.setItem('access',   params.get('token'));
+                localStorage.setItem('refresh',  params.get('refresh') || '');
+                localStorage.setItem('user_id',  params.get('user_id') || '');
+                window.history.replaceState({}, '', window.location.pathname);
+            }
+        })();
+
         async function creerReservation() {
     
             const token     = localStorage.getItem('access');
@@ -129,7 +140,7 @@
             };
 
             try {
-                const res = await fetch('http://127.0.0.1:8083/api/reservations/', {
+                const res = await fetch('http://localhost:8083/api/reservations/', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

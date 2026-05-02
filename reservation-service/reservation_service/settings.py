@@ -25,7 +25,10 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
+
+# JWT secret shared with auth-service to validate tokens locally
+JWT_SECRET_KEY = config('JWT_SECRET_KEY', default='secret-auth')
 
 
 # Application definition

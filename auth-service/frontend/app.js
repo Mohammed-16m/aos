@@ -1,6 +1,6 @@
-const API_URL = "https://symmetrical-garbanzo-wr5pqv69gqv7f96xx-8081.app.github.dev/auth";
-const FRONTEND_URL = "https://symmetrical-garbanzo-wr5pqv69gqv7f96xx-3000.app.github.dev";
-const RESERVATION_URL = "https://symmetrical-garbanzo-wr5pqv69gqv7f96xx-8083.app.github.dev";
+const API_URL = "http://localhost:8081/auth";
+const FRONTEND_URL = "http://localhost:3000";
+const RESERVATION_URL = "http://localhost:8083";
 // ── TOKEN REFRESH ──
 async function refreshAccessToken() {
     const refresh = localStorage.getItem("refresh");

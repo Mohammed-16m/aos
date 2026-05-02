@@ -360,7 +360,7 @@
         <a class="nav-item" href="#" onclick="goToReservations()">
             <span class="nav-icon">📅</span> My Reservations
         </a>
-        <a class="nav-item" href="#" onclick="goToReservations()">
+        <a class="nav-item" href="#" onclick="goToReservations('new')">
             <span class="nav-icon">➕</span> New Reservation
         </a>
         <div class="nav-section-label" style="margin-top:8px">Account</div>
@@ -417,7 +417,7 @@
             <p>View upcoming and past reservations, modify or cancel a booking.</p>
             <span class="tag">Reservation Service</span>
         </div>
-        <div class="action-card new-res" onclick="goToReservations()">
+        <div class="action-card new-res" onclick="goToReservations('new')">
             <span class="card-arrow">↗</span>
             <span class="card-icon">➕</span>
             <h3>New Reservation</h3>
@@ -563,8 +563,22 @@ function goToTables() {
     window.location.href = "http://localhost:8082/";
 }
 
-function goToReservations() {
-    window.location.href = "http://localhost:8083/reservations/dashboard/";
+function goToReservations(type) {
+    const token   = localStorage.getItem('access');
+    const refresh = localStorage.getItem('refresh');
+    const userId  = localStorage.getItem('user_id') || '';
+    const role    = document.getElementById('sidebarRole').textContent.trim().toUpperCase();
+    const params  = new URLSearchParams({ token, refresh, user_id: userId });
+
+    if (type === 'new' && role !== 'ADMIN') {
+        window.location.href = `http://localhost:8083/reservation.html?${params}`;
+        return;
+    }
+    if (role === 'ADMIN') {
+        window.location.href = `http://localhost:8083/dashboard-admin.html?${params}`;
+    } else {
+        window.location.href = `http://localhost:8083/dashboard_client.html?${params}`;
+    }
 }
 
     // ── LOGOUT ──

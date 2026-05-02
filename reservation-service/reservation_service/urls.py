@@ -16,8 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+import os
+from django.views.static import serve
+
+FRONTEND_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'frontend')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/reservations/', include('reservations.urls')),
+    path('dashboard-admin.html', serve, {'path': 'dashboard-admin.html', 'document_root': FRONTEND_DIR}),
+    path('dashboard_client.html', serve, {'path': 'dashboard_client.html', 'document_root': FRONTEND_DIR}),
+    path('reservation.html', serve, {'path': 'reservation.html', 'document_root': FRONTEND_DIR}),
+    path('confirmation.html', serve, {'path': 'confirmation.html', 'document_root': FRONTEND_DIR}),
 ]
