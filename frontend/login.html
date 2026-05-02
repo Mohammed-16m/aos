@@ -199,7 +199,7 @@
 </div>
 
 <script>
-    const API_URL = "/auth";
+    const API_URL = "http://localhost:8081/auth";
 
     function login() {
         const email    = document.getElementById("email").value.trim();
@@ -229,11 +229,11 @@
                 msg.className   = "auth-message success";
                 msg.textContent = "Login successful! Redirecting...";
                 setTimeout(() => {
-                    if (data.data.role === "ADMIN") {
-                        window.location.href = "/auth/dashboard.html";
-                    } else {
-                        window.location.href = "/auth/dashboard.html";
-                    }
+                if (data.data.role === 'ADMIN') {
+                window.location.href = 'http://localhost:3000/dashboard-admin.html';
+                } else {
+                window.location.href = 'http://localhost:3000/dashboard.html';
+                }
                 }, 1000);
             } else {
                 msg.textContent = data.message || "Login failed";

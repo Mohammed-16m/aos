@@ -7,7 +7,7 @@ SECRET_KEY = 'django-insecure-64%qd#zx!f#2sb$3b982!x-rsvj75fu2b_6c+#k$-=0b2=)j76
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']  # ← modifié
+ALLOWED_HOSTS = ['*']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -16,11 +16,13 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',   # ← ajouté
-    'tables',           # ← ajouté
+    'corsheaders',        # ← ajouter
+    'rest_framework',
+    'tables',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',  # ← ajouter EN PREMIER
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -29,6 +31,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# ← ajouter
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'restaurant_service.urls'
 
@@ -63,12 +69,8 @@ AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
-LANGUAGE_CODE = 'fr-fr'   # ← changé en français
-
-TIME_ZONE = 'Africa/Algiers'  # ← changé pour Algérie
-
+LANGUAGE_CODE = 'fr-fr'
+TIME_ZONE = 'Africa/Algiers'
 USE_I18N = True
 USE_TZ = True
-
 STATIC_URL = 'static/'
-

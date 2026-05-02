@@ -564,7 +564,17 @@ function goToTables() {
 }
 
 function goToReservations(type) {
-    const token   = localStorage.getItem('access');
+    const role = localStorage.getItem('role');
+    if (type === 'new') {
+        window.location.href = "http://localhost:8083/reservations/creer/";
+        return;
+    }
+    if (role === 'ADMIN') {
+        window.location.href = "http://localhost:8083/reservations/dashboard-admin/";
+    } else {
+        window.location.href = "http://localhost:8083/reservations/dashboard/";
+    }
+}    const token   = localStorage.getItem('access');
     const refresh = localStorage.getItem('refresh');
     const userId  = localStorage.getItem('user_id') || '';
     const role    = document.getElementById('sidebarRole').textContent.trim().toUpperCase();
