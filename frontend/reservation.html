@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Réserver une table</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+        }
+
+        h2 {
+            text-align: center;
+            color: #e74c3c;
+            margin-bottom: 30px;
+            font-size: 24px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border 0.3s;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #e74c3c;
+        }
+
+        button {
+            width: 100%;
+            padding: 14px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover { background: #c0392b; }
+
+        .message {
+            padding: 12px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
+            font-weight: 600;
+            display: none;
+        }
+
+        .success { background: #d4edda; color: #155724; display: block; }
+        .error   { background: #f8d7da; color: #721c24; display: block; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>🍽️ Réserver une table</h2>
+
+        <label>Numéro de table :</label>
+        <input type="number" id="table_id" placeholder="Ex: 3" min="1" required>
+
+        <label>Date :</label>
+        <input type="date" id="date" required>
+
+        <label>Heure :</label>
+        <input type="time" id="heure" required>
+
+        <label>Nombre de personnes :</label>
+        <input type="number" id="nb_personnes" placeholder="Ex: 4" min="1" max="20" required>
+
+        <button onclick="creerReservation()">Confirmer la réservation</button>
+
+        <div class="message" id="message"></div>
+    </div>
+
+    <script>
+        // ── Récupère le token depuis l'URL si redirigé depuis le dashboard ──
+        (function() {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('token')) {
+                localStorage.setItem('access',   params.get('token'));
+                localStorage.setItem('refresh',  params.get('refresh') || '');
+                localStorage.setItem('user_id',  params.get('user_id') || '');
+                window.history.replaceState({}, '', window.location.pathname);
+            }
+        })();
+
+        async function creerReservation() {
+    
+            const token     = localStorage.getItem('access');
+            const client_id = parseInt(localStorage.getItem('user_id')) || 1;
+
+            const table_id    = document.getElementById('table_id').value;
+            const date        = document.getElementById('date').value;
+            const heure       = document.getElementById('heure').value;
+            const nb_personnes = document.getElementById('nb_personnes').value;
+
+            // Vérifier que tous les champs sont remplis
+            if (!table_id || !date || !heure || !nb_personnes) {
+                afficherMessage('Veuillez remplir tous les champs.', 'error');
+                return;
+            }
+
+            const body = {
+                client_id:    client_id,
+                table_id:     parseInt(table_id),
+                date:         date,
+                heure:        heure + ':00',
+                nb_personnes: parseInt(nb_personnes)
+            };
+
+            try {
+                const res = await fetch('http://localhost:8083/api/reservations/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + token
+                    },
+                    body: JSON.stringify(body)
+                });
+
+                const data = await res.json();
+
+                if (data.status === 'success') {
+                    localStorage.setItem('last_reservation', JSON.stringify(data.data));
+                    afficherMessage('✅ Réservation créée ! Redirection...', 'success');
+                    setTimeout(() => {
+                        window.location.href = 'confirmation.html';
+                    }, 1500);
+                } else {
+                    afficherMessage('❌ ' + (data.message || 'Erreur lors de la réservation.'), 'error');
+                }
+            } catch (err) {
+                afficherMessage('❌ Impossible de contacter le serveur.', 'error');
+            }
+        }
+
+        function afficherMessage(texte, type) {
+            const msg = document.getElementById('message');
+            msg.textContent = texte;
+            msg.className = 'message ' + type;
+        }
+
+        // Mettre la date minimum = aujourd'hui
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('date').min = today;
+    </script>
+</body>
+</html>

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            text-align: center;
+        }
+
+        .icone { font-size: 60px; margin-bottom: 20px; }
+
+        h2 { color: #27ae60; margin-bottom: 25px; }
+
+        .card-info {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        .ligne {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+            font-size: 15px;
+        }
+
+        .ligne:last-child { border-bottom: none; }
+        .ligne span:first-child { color: #777; }
+        .ligne span:last-child  { font-weight: 600; color: #333; }
+
+        .statut {
+            display: inline-block;
+            background: #d4edda;
+            color: #155724;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #e74c3c;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .btn:hover { background: #c0392b; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="icone">✅</div>
+        <h2>Réservation Confirmée !</h2>
+
+        <div class="card-info" id="details">
+            <div class="ligne">
+                <span>Chargement...</span>
+            </div>
+        </div>
+
+        <a href="dashboard_client.html" class="btn">
+            📋 Voir mes réservations
+        </a>
+    </div>
+
+    <script>
+        const r = JSON.parse(localStorage.getItem('last_reservation') || '{}');
+
+        if (r.id) {
+            document.getElementById('details').innerHTML = `
+                <div class="ligne">
+                    <span>Numéro de réservation</span>
+                    <span>#${r.id}</span>
+                </div>
+                <div class="ligne">
+                    <span>Table</span>
+                    <span>Table ${r.table_id}</span>
+                </div>
+                <div class="ligne">
+                    <span>Date</span>
+                    <span>${r.date}</span>
+                </div>
+                <div class="ligne">
+                    <span>Heure</span>
+                    <span>${r.heure}</span>
+                </div>
+                <div class="ligne">
+                    <span>Nombre de personnes</span>
+                    <span>${r.nb_personnes} personnes</span>
+                </div>
+                <div class="ligne">
+                    <span>Statut</span>
+                    <span class="statut">${r.statut}</span>
+                </div>
+            `;
+        }
+    </script>
+</body>
+</html>

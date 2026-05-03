@@ -24,149 +24,75 @@
             --sidebar-w: 260px;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            background: var(--bg);
-            color: var(--text);
-            font-family: 'DM Sans', sans-serif;
-            min-height: 100vh;
-        }
+        body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
         .sidebar {
-            position: fixed;
-            left: 0; top: 0;
-            width: var(--sidebar-w);
-            height: 100vh;
-            background: var(--surface);
-            border-right: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            z-index: 100;
+            position: fixed; left: 0; top: 0;
+            width: var(--sidebar-w); height: 100vh;
+            background: var(--surface); border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; z-index: 100;
             transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
         }
         .sidebar.collapsed { transform: translateX(calc(-1 * var(--sidebar-w))); }
-        .sidebar-logo {
-            padding: 28px 24px 20px;
-            border-bottom: 1px solid var(--border);
-        }
-        .sidebar-logo .brand {
-            font-family: 'Playfair Display', serif;
-            font-size: 20px;
-            color: var(--gold);
-        }
-        .sidebar-logo .tagline {
-            font-size: 11px;
-            color: var(--text-dim);
-            margin-top: 3px;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-        }
+        .sidebar-logo { padding: 28px 24px 20px; border-bottom: 1px solid var(--border); }
+        .sidebar-logo .brand { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--gold); }
+        .sidebar-logo .tagline { font-size: 11px; color: var(--text-dim); margin-top: 3px; letter-spacing: 1.5px; text-transform: uppercase; }
+
         .sidebar-avatar {
-            padding: 20px 24px;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 12px;
+            padding: 20px 24px; border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; gap: 12px;
         }
         .avatar-circle {
-            width: 40px; height: 40px;
-            border-radius: 50%;
+            width: 40px; height: 40px; border-radius: 50%;
             background: linear-gradient(135deg, var(--gold), #8b6914);
             display: flex; align-items: center; justify-content: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 16px;
-            font-weight: 700;
-            color: var(--bg);
-            flex-shrink: 0;
+            font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700;
+            color: var(--bg); flex-shrink: 0;
         }
         .avatar-info .name { font-size: 14px; font-weight: 500; color: var(--text); }
         .role-badge {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding: 2px 8px;
-            border-radius: 20px;
-            margin-top: 3px;
-            display: inline-block;
+            font-size: 10px; font-weight: 600; letter-spacing: 1px;
+            text-transform: uppercase; padding: 2px 8px; border-radius: 20px;
+            margin-top: 3px; display: inline-block;
         }
         .role-badge.client { background: rgba(90,143,224,0.2); color: var(--blue); }
         .role-badge.admin  { background: rgba(201,168,76,0.2); color: var(--gold); }
-        .sidebar-nav {
-            flex: 1;
-            padding: 16px 12px;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .nav-section-label {
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            color: var(--text-dim);
-            padding: 12px 12px 6px;
-        }
+
+        .sidebar-nav { flex: 1; padding: 16px 12px; display: flex; flex-direction: column; gap: 4px; }
+        .nav-section-label { font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); padding: 12px 12px 6px; }
         .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 11px 14px;
-            border-radius: 10px;
-            cursor: pointer;
-            color: var(--text-muted);
-            font-size: 14px;
-            transition: all 0.18s;
-            border: 1px solid transparent;
-            text-decoration: none;
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 14px; border-radius: 10px; cursor: pointer;
+            color: var(--text-muted); font-size: 14px; transition: all 0.18s;
+            border: 1px solid transparent; text-decoration: none;
         }
         .nav-item:hover { background: var(--surface2); color: var(--text); border-color: var(--border); }
         .nav-item.active { background: var(--gold-dim); color: var(--gold); border-color: rgba(201,168,76,0.25); font-weight: 500; }
         .nav-icon { font-size: 17px; width: 20px; text-align: center; }
         .sidebar-bottom { padding: 16px 12px; border-top: 1px solid var(--border); }
         .logout-btn {
-            width: 100%;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 11px 14px;
-            border-radius: 10px;
-            cursor: pointer;
-            color: var(--red);
-            font-size: 14px;
-            font-weight: 500;
-            background: rgba(224,90,90,0.08);
-            border: 1px solid rgba(224,90,90,0.15);
-            transition: all 0.18s;
-            font-family: 'DM Sans', sans-serif;
+            width: 100%; display: flex; align-items: center; gap: 12px;
+            padding: 11px 14px; border-radius: 10px; cursor: pointer;
+            color: var(--red); font-size: 14px; font-weight: 500;
+            background: rgba(224,90,90,0.08); border: 1px solid rgba(224,90,90,0.15);
+            transition: all 0.18s; font-family: 'DM Sans', sans-serif;
         }
         .logout-btn:hover { background: rgba(224,90,90,0.18); }
+
         .topbar {
-            position: fixed;
-            top: 0;
-            left: var(--sidebar-w);
-            right: 0;
-            height: 64px;
-            background: rgba(10,10,15,0.85);
-            backdrop-filter: blur(12px);
+            position: fixed; top: 0; left: var(--sidebar-w); right: 0; height: 64px;
+            background: rgba(10,10,15,0.85); backdrop-filter: blur(12px);
             border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 28px;
-            z-index: 90;
-            transition: left 0.3s;
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 0 28px; z-index: 90; transition: left 0.3s;
         }
         .topbar.expanded { left: 0; }
         .topbar-left { display: flex; align-items: center; gap: 16px; }
         .toggle-btn {
-            width: 36px; height: 36px;
-            border-radius: 8px;
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            color: var(--text-muted);
-            font-size: 16px;
-            transition: all 0.18s;
+            width: 36px; height: 36px; border-radius: 8px;
+            background: var(--surface2); border: 1px solid var(--border);
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+            color: var(--text-muted); font-size: 16px; transition: all 0.18s;
         }
         .toggle-btn:hover { color: var(--text); }
         .page-title { font-size: 15px; font-weight: 500; color: var(--text-muted); }
@@ -174,65 +100,34 @@
         .topbar-right { display: flex; align-items: center; gap: 12px; }
         .time-display { font-size: 13px; color: var(--text-dim); }
         .status-dot {
-            width: 8px; height: 8px;
-            border-radius: 50%;
-            background: var(--green);
-            box-shadow: 0 0 6px rgba(90,191,138,0.6);
+            width: 8px; height: 8px; border-radius: 50%;
+            background: var(--green); box-shadow: 0 0 6px rgba(90,191,138,0.6);
             animation: pulse-dot 2s infinite;
         }
         @keyframes pulse-dot { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-        .main {
-            margin-left: var(--sidebar-w);
-            margin-top: 64px;
-            padding: 36px 32px;
-            min-height: calc(100vh - 64px);
-            transition: margin-left 0.3s;
-        }
+
+        .main { margin-left: var(--sidebar-w); margin-top: 64px; padding: 36px 32px; min-height: calc(100vh - 64px); transition: margin-left 0.3s; }
         .main.expanded { margin-left: 0; }
+
         .welcome-banner {
             background: linear-gradient(135deg, var(--surface2) 0%, rgba(201,168,76,0.08) 100%);
-            border: 1px solid rgba(201,168,76,0.2);
-            border-radius: 16px;
-            padding: 28px 32px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 32px;
+            border: 1px solid rgba(201,168,76,0.2); border-radius: 16px;
+            padding: 28px 32px; display: flex; align-items: center;
+            justify-content: space-between; margin-bottom: 32px;
         }
-        .welcome-text h1 {
-            font-family: 'Playfair Display', serif;
-            font-size: 28px;
-            font-weight: 600;
-            color: var(--text);
-            margin-bottom: 6px;
-        }
+        .welcome-text h1 { font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
         .welcome-text h1 span { color: var(--gold); }
         .welcome-text p { font-size: 14px; color: var(--text-muted); }
         .welcome-decoration { font-size: 60px; opacity: 0.15; }
-        .section-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 18px;
-            color: var(--text);
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
+
+        .section-title { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--text); margin-bottom: 16px; display: flex; align-items: center; gap: 10px; }
         .section-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
-        .actions-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 16px;
-            margin-bottom: 32px;
-        }
+
+        .actions-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 32px; }
         .action-card {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 26px 28px;
-            cursor: pointer;
-            transition: all 0.22s;
-            position: relative;
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 14px; padding: 26px 28px; cursor: pointer;
+            transition: all 0.22s; position: relative;
         }
         .action-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.3); }
         .action-card.tables:hover     { border-color: rgba(201,168,76,0.3); }
@@ -244,62 +139,16 @@
         .action-card p { font-size: 13px; color: var(--text-muted); line-height: 1.5; }
         .action-card .card-arrow { position: absolute; top: 26px; right: 24px; color: var(--text-dim); font-size: 18px; transition: transform 0.2s, color 0.2s; }
         .action-card:hover .card-arrow { transform: translate(3px, -3px); color: var(--gold); }
-        .tag {
-            display: inline-block;
-            font-size: 10px;
-            font-weight: 600;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            padding: 3px 10px;
-            border-radius: 20px;
-            margin-top: 12px;
-        }
+        .tag { display: inline-block; font-size: 10px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-top: 12px; }
         .action-card.tables .tag { background: var(--gold-dim); color: var(--gold); }
         .action-card.reservations .tag { background: rgba(90,143,224,0.15); color: var(--blue); }
-        .modal-overlay {
-            display: none;
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.6);
-            z-index: 200;
-            align-items: center;
-            justify-content: center;
-            backdrop-filter: blur(4px);
-        }
+
+        /* MODAL */
+        .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 200; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
         .modal-overlay.open { display: flex; }
-        .modal {
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 18px;
-            padding: 32px;
-            width: 380px;
-            max-width: 90vw;
-            position: relative;
-        }
-        .modal-close {
-            position: absolute;
-            top: 16px; right: 16px;
-            width: 30px; height: 30px;
-            border-radius: 8px;
-            background: var(--surface2);
-            border: 1px solid var(--border);
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 16px;
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'DM Sans', sans-serif;
-        }
-        .modal-avatar {
-            width: 64px; height: 64px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--gold), #8b6914);
-            display: flex; align-items: center; justify-content: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 26px;
-            font-weight: 700;
-            color: var(--bg);
-            margin: 0 auto 16px;
-        }
+        .modal { background: var(--surface); border: 1px solid var(--border); border-radius: 18px; padding: 32px; width: 380px; max-width: 90vw; position: relative; }
+        .modal-close { position: absolute; top: 16px; right: 16px; width: 30px; height: 30px; border-radius: 8px; background: var(--surface2); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; font-size: 16px; display: flex; align-items: center; justify-content: center; font-family: 'DM Sans', sans-serif; }
+        .modal-avatar { width: 64px; height: 64px; border-radius: 50%; background: linear-gradient(135deg, var(--gold), #8b6914); display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 26px; font-weight: 700; color: var(--bg); margin: 0 auto 16px; }
         .modal-name { font-family: 'Playfair Display', serif; font-size: 20px; text-align: center; color: var(--text); margin-bottom: 4px; }
         .modal-role { text-align: center; margin-bottom: 24px; }
         .modal hr { border: none; border-top: 1px solid var(--border); margin-bottom: 20px; }
@@ -307,24 +156,12 @@
         .info-row:last-child { border-bottom: none; }
         .info-row .key { font-size: 13px; color: var(--text-muted); }
         .info-row .val { font-size: 13px; color: var(--text); font-weight: 500; }
-        .toast {
-            position: fixed;
-            bottom: 28px; right: 28px;
-            background: var(--surface2);
-            border: 1px solid rgba(90,191,138,0.3);
-            color: var(--green);
-            padding: 12px 20px;
-            border-radius: 10px;
-            font-size: 13px;
-            font-weight: 500;
-            transform: translateY(80px);
-            opacity: 0;
-            transition: all 0.3s;
-            z-index: 999;
-        }
+
+        .toast { position: fixed; bottom: 28px; right: 28px; background: var(--surface2); border: 1px solid rgba(90,191,138,0.3); color: var(--green); padding: 12px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; transform: translateY(80px); opacity: 0; transition: all 0.3s; z-index: 999; }
         .toast.show { transform: translateY(0); opacity: 1; }
         .overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 95; }
         .overlay.active { display: block; }
+
         @media (max-width: 768px) {
             .sidebar { transform: translateX(calc(-1 * var(--sidebar-w))); }
             .sidebar.open { transform: translateX(0); }
@@ -336,7 +173,6 @@
 </head>
 <body>
 
-<!-- SIDEBAR -->
 <div class="sidebar" id="sidebar">
     <div class="sidebar-logo">
         <div class="brand">TableVista</div>
@@ -351,16 +187,16 @@
     </div>
     <nav class="sidebar-nav">
         <div class="nav-section-label">Navigation</div>
-        <a class="nav-item active" href="/auth/dashboard.html">
+        <a class="nav-item active" href="dashboard.html">
             <span class="nav-icon">⊞</span> Dashboard
         </a>
-        <a class="nav-item" href="#" onclick="goToTables()">
+        <a class="nav-item" href="index.html">
             <span class="nav-icon">🍽️</span> Browse Tables
         </a>
-        <a class="nav-item" href="#" onclick="goToReservations()">
+        <a class="nav-item" href="dashboard_client.html">
             <span class="nav-icon">📅</span> My Reservations
         </a>
-        <a class="nav-item" href="#" onclick="goToReservations('new')">
+        <a class="nav-item" href="reservation.html">
             <span class="nav-icon">➕</span> New Reservation
         </a>
         <div class="nav-section-label" style="margin-top:8px">Account</div>
@@ -375,10 +211,8 @@
     </div>
 </div>
 
-<!-- OVERLAY -->
 <div class="overlay" id="overlay" onclick="closeSidebar()"></div>
 
-<!-- TOPBAR -->
 <div class="topbar" id="topbar">
     <div class="topbar-left">
         <button class="toggle-btn" onclick="toggleSidebar()">☰</button>
@@ -390,7 +224,6 @@
     </div>
 </div>
 
-<!-- MAIN -->
 <div class="main" id="main">
     <div class="welcome-banner">
         <div class="welcome-text">
@@ -403,21 +236,21 @@
     <div class="section-title">Quick Actions</div>
 
     <div class="actions-grid">
-        <div class="action-card tables" onclick="goToTables()">
+        <div class="action-card tables" onclick="window.location.href='index.html'">
             <span class="card-arrow">↗</span>
             <span class="card-icon">🍽️</span>
             <h3>Browse Tables</h3>
             <p>Explore available tables, check capacity and book the perfect spot.</p>
             <span class="tag">Restaurant Service</span>
         </div>
-        <div class="action-card reservations" onclick="goToReservations()">
+        <div class="action-card reservations" onclick="window.location.href='dashboard_client.html'">
             <span class="card-arrow">↗</span>
             <span class="card-icon">📅</span>
             <h3>My Reservations</h3>
             <p>View upcoming and past reservations, modify or cancel a booking.</p>
             <span class="tag">Reservation Service</span>
         </div>
-        <div class="action-card new-res" onclick="goToReservations('new')">
+        <div class="action-card new-res" onclick="window.location.href='reservation.html'">
             <span class="card-arrow">↗</span>
             <span class="card-icon">➕</span>
             <h3>New Reservation</h3>
@@ -440,166 +273,74 @@
         <button class="modal-close" onclick="closeProfile()">✕</button>
         <div class="modal-avatar" id="modalAvatar">?</div>
         <div class="modal-name" id="modalName">—</div>
-        <div class="modal-role">
-            <span class="role-badge client" id="modalRole">CLIENT</span>
-        </div>
+        <div class="modal-role"><span class="role-badge client" id="modalRole">CLIENT</span></div>
         <hr>
-        <div class="info-row">
-            <span class="key">Full Name</span>
-            <span class="val" id="modalUsername">—</span>
-        </div>
-        <div class="info-row">
-            <span class="key">Email</span>
-            <span class="val" id="modalEmail">—</span>
-        </div>
-        <div class="info-row">
-            <span class="key">Role</span>
-            <span class="val" id="modalRoleText">—</span>
-        </div>
-        <div class="info-row">
-            <span class="key">User ID</span>
-            <span class="val" id="modalId">—</span>
-        </div>
+        <div class="info-row"><span class="key">Full Name</span><span class="val" id="modalUsername">—</span></div>
+        <div class="info-row"><span class="key">Email</span><span class="val" id="modalEmail">—</span></div>
+        <div class="info-row"><span class="key">Role</span><span class="val" id="modalRoleText">—</span></div>
+        <div class="info-row"><span class="key">User ID</span><span class="val" id="modalId">—</span></div>
     </div>
 </div>
 
-<!-- Toast -->
 <div class="toast" id="toast"></div>
 
 <script>
-    const API_URL = "/auth";
-    const FRONTEND_URL = "http://localhost:8082";
-    const RESERVATION_URL = "http://localhost:8083";
+    const AUTH_URL = 'http://localhost:8081/auth';
 
     // ── CLOCK ──
     function updateClock() {
-        const now = new Date();
-        document.getElementById('clock').textContent = now.toLocaleTimeString();
+        document.getElementById('clock').textContent = new Date().toLocaleTimeString();
     }
     setInterval(updateClock, 1000);
     updateClock();
 
-    // ── TOKEN REFRESH ──
-    async function refreshAccessToken() {
-        const refresh = localStorage.getItem("refresh");
-        if (!refresh) return false;
-        try {
-            const res = await fetch(`${API_URL}/refresh`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ refresh })
-            });
-            if (!res.ok) return false;
-            const data = await res.json();
-            localStorage.setItem("access", data.access);
-            return true;
-        } catch { return false; }
+    // ── AUTH CHECK ──
+    const token = localStorage.getItem('access');
+    const role  = localStorage.getItem('role');
+
+    if (!token) {
+        window.location.href = 'login.html';
     }
 
-    // ── AUTH FETCH ──
-    async function authFetch(url, options = {}) {
-        const token = localStorage.getItem("access");
-        if (!options.headers) options.headers = {};
-        options.headers["Authorization"] = "Bearer " + token;
-        if (!options.headers["Content-Type"] && options.body) {
-            options.headers["Content-Type"] = "application/json";
-        }
-        let res = await fetch(url, options);
-        if (res.status === 401) {
-            const refreshed = await refreshAccessToken();
-            if (refreshed) {
-                options.headers["Authorization"] = "Bearer " + localStorage.getItem("access");
-                res = await fetch(url, options);
-            } else {
-                localStorage.clear();
-                window.location.href = "/auth/login.html";
-                return;
-            }
-        }
-        return res;
-    }
-
-    // ── CHECK AUTH ──
-    async function checkAuth() {
-        const token = localStorage.getItem("access");
-        if (!token) {
-            window.location.href = "/auth/login.html";
-            return;
-        }
-        try {
-            const res = await authFetch(`${API_URL}/validate`);
-            if (!res || !res.ok) {
-                localStorage.clear();
-                window.location.href = "/auth/login.html";
-            }
-        } catch {
-            localStorage.clear();
-            window.location.href = "/auth/login.html";
-        }
+    // Si admin → rediriger vers dashboard admin
+    if (role === 'ADMIN') {
+        window.location.href = 'dashboard-admin.html';
     }
 
     // ── GET USER INFO ──
-    function getUser() {
-        authFetch(`${API_URL}/me`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.status !== "success") return;
-                const u = data.data;
-                const fullName = (u.first_name && u.last_name)
-                    ? `${u.first_name} ${u.last_name}` : u.username;
-                document.getElementById('welcomeName').textContent    = u.first_name || u.email;
-                document.getElementById('avatarInitial').textContent  = (u.first_name || u.username || u.email)[0].toUpperCase();
-                document.getElementById('sidebarUsername').textContent = fullName;
-                const roleBadge = document.getElementById('sidebarRole');
-                roleBadge.textContent = u.role;
-                roleBadge.className = 'role-badge ' + (u.role === 'ADMIN' ? 'admin' : 'client');
-            })
-            .catch(() => {});
-    }
+    async function getUser() {
+        try {
+            const res  = await fetch(`${AUTH_URL}/me`, {
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const data = await res.json();
+            if (data.status !== 'success') return;
+            const u = data.data;
+            const fullName = (u.first_name && u.last_name) ? `${u.first_name} ${u.last_name}` : u.username || u.email;
+            const initial  = (u.first_name || u.username || u.email || '?')[0].toUpperCase();
 
-    // ── NAVIGATION ──
-   // ✅ Correct
-function goToTables() {
-    window.location.href = "http://localhost:8082/";
-}
+            document.getElementById('welcomeName').textContent    = u.first_name || u.email;
+            document.getElementById('avatarInitial').textContent  = initial;
+            document.getElementById('sidebarUsername').textContent = fullName;
 
-function goToReservations(type) {
-    const role = localStorage.getItem('role');
-    if (type === 'new') {
-        window.location.href = "http://localhost:8083/reservations/creer/";
-        return;
+            const roleBadge = document.getElementById('sidebarRole');
+            roleBadge.textContent = u.role;
+            roleBadge.className   = 'role-badge ' + (u.role === 'ADMIN' ? 'admin' : 'client');
+        } catch (e) {
+            console.error('Erreur getUser:', e);
+        }
     }
-    if (role === 'ADMIN') {
-        window.location.href = "http://localhost:8083/reservations/dashboard-admin/";
-    } else {
-        window.location.href = "http://localhost:8083/reservations/dashboard/";
-    }
-}    const token   = localStorage.getItem('access');
-    const refresh = localStorage.getItem('refresh');
-    const userId  = localStorage.getItem('user_id') || '';
-    const role    = document.getElementById('sidebarRole').textContent.trim().toUpperCase();
-    const params  = new URLSearchParams({ token, refresh, user_id: userId });
-
-    if (type === 'new' && role !== 'ADMIN') {
-        window.location.href = `http://localhost:8083/reservation.html?${params}`;
-        return;
-    }
-    if (role === 'ADMIN') {
-        window.location.href = `http://localhost:8083/dashboard-admin.html?${params}`;
-    } else {
-        window.location.href = `http://localhost:8083/dashboard_client.html?${params}`;
-    }
-}
 
     // ── LOGOUT ──
     function logout() {
-        const refresh = localStorage.getItem("refresh");
-        authFetch(`${API_URL}/logout`, {
-            method: "POST",
+        const refresh = localStorage.getItem('refresh');
+        fetch(`${AUTH_URL}/logout`, {
+            method: 'POST',
+            headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
             body: JSON.stringify({ refresh })
         }).finally(() => {
             localStorage.clear();
-            window.location.href = "/auth/login.html";
+            window.location.href = 'login.html';
         });
     }
 
@@ -625,33 +366,29 @@ function goToReservations(type) {
 
     // ── PROFILE MODAL ──
     function showProfile() {
-        authFetch(`${API_URL}/me`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.status !== "success") return;
-                const u = data.data;
-                const fullName = (u.first_name && u.last_name)
-                    ? `${u.first_name} ${u.last_name}` : u.email;
-                document.getElementById('modalAvatar').textContent   = (u.first_name || u.email)[0].toUpperCase();
-                document.getElementById('modalName').textContent     = fullName;
-                document.getElementById('modalUsername').textContent = fullName;
-                document.getElementById('modalEmail').textContent    = u.email;
-                document.getElementById('modalId').textContent       = '#' + u.id;
-                const badge = document.getElementById('modalRole');
-                badge.textContent = u.role;
-                badge.className = 'role-badge ' + (u.role === 'ADMIN' ? 'admin' : 'client');
-                document.getElementById('modalRoleText').textContent = u.role;
-                document.getElementById('profileModal').classList.add('open');
-            });
+        fetch(`${AUTH_URL}/me`, {
+            headers: { 'Authorization': 'Bearer ' + token }
+        })
+        .then(res => res.json())
+        .then(data => {
+            if (data.status !== 'success') return;
+            const u = data.data;
+            const fullName = (u.first_name && u.last_name) ? `${u.first_name} ${u.last_name}` : u.email;
+            document.getElementById('modalAvatar').textContent   = (u.first_name || u.email)[0].toUpperCase();
+            document.getElementById('modalName').textContent     = fullName;
+            document.getElementById('modalUsername').textContent = fullName;
+            document.getElementById('modalEmail').textContent    = u.email;
+            document.getElementById('modalId').textContent       = '#' + u.id;
+            const badge = document.getElementById('modalRole');
+            badge.textContent = u.role;
+            badge.className   = 'role-badge ' + (u.role === 'ADMIN' ? 'admin' : 'client');
+            document.getElementById('modalRoleText').textContent = u.role;
+            document.getElementById('profileModal').classList.add('open');
+        });
     }
 
-    function closeProfile() {
-        document.getElementById('profileModal').classList.remove('open');
-    }
-
-    function closeProfileOnOverlay(event) {
-        if (event.target === document.getElementById('profileModal')) closeProfile();
-    }
+    function closeProfile() { document.getElementById('profileModal').classList.remove('open'); }
+    function closeProfileOnOverlay(e) { if (e.target === document.getElementById('profileModal')) closeProfile(); }
 
     // ── TOAST ──
     function showToast(msg) {
@@ -662,7 +399,7 @@ function goToReservations(type) {
     }
 
     // ── INIT ──
-    checkAuth().then(() => getUser());
+    getUser();
 </script>
 </body>
 </html>

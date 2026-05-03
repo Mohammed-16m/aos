@@ -198,12 +198,12 @@
     <p class="auth-message" id="message"></p>
 
     <div class="auth-footer">
-        Already have an account? <a href="/auth/login.html">Sign in</a>
+        Already have an account? <a href="login.html">Sign in</a>
     </div>
 </div>
 
 <script>
-    const API_URL = "/auth";
+    const API_URL = "http://localhost:8081/auth";
 
     function register() {
         const first_name = document.getElementById("first_name").value.trim();
@@ -232,7 +232,7 @@
                 msg.className = "auth-message success";
                 msg.textContent = "Account created! Redirecting...";
                 setTimeout(() => {
-                    window.location.href = "/auth/dashboard.html";
+                    window.location.href = "dashboard.html";
                 }, 1000);
             } else {
                 msg.textContent = data.message || "Registration failed";

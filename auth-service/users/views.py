@@ -18,12 +18,19 @@ from django.contrib.auth import get_user_model
 @api_view(['POST'])
 def register(request):
     serializer = RegisterSerializer(data=request.data)
-    
     if serializer.is_valid():
-        serializer.save()
-        return Response({"status": "success", "data": serializer.data}, status=201)
-    
-    return Response(serializer.errors, status=400)
+        user = serializer.save()
+        refresh = RefreshToken.for_user(user)
+        return Response({
+            "status": "success",
+            "data": {
+                "access":  str(refresh.access_token),
+                "refresh": str(refresh),
+                "user_id": user.id,
+                "role":    user.role
+            }
+        }, status=201)
+    return Response({"status": "error", "message": serializer.errors}, status=400)
 
 
 User = get_user_model()
