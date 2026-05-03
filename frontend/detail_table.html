@@ -2,163 +2,300 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Détail de la Table</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TableVista — Détail de la Table</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface2: #1a1a26;
+            --border: rgba(255,255,255,0.07);
+            --gold: #c9a84c;
+            --gold-dim: rgba(201,168,76,0.12);
+            --text: #f0ede8;
+            --text-muted: #8a8490;
+            --text-dim: #5a5560;
+            --red: #e05a5a;
+            --green: #5abf8a;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: Arial, sans-serif;
-            background: #f5f5f5;
-        }
-
-        .navbar {
-            background: #2c3e50;
-            color: white;
-            padding: 15px 30px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
             align-items: center;
+            justify-content: center;
+            padding: 24px;
+            position: relative;
+            overflow: hidden;
         }
 
-        .navbar h1 { font-size: 22px; }
+        body::before {
+            content: '';
+            position: absolute;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(201,168,76,0.05), transparent);
+            top: -150px; right: -150px;
+            border-radius: 50%;
+            pointer-events: none;
+        }
 
-        .navbar a {
-            color: white;
+        /* ── TOPNAV ── */
+        .topnav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 60px;
+            background: rgba(10,10,15,0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            z-index: 100;
+        }
+
+        .topnav .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: var(--gold);
             text-decoration: none;
-            margin-left: 20px;
         }
 
-        .container {
-            max-width: 700px;
-            margin: 50px auto;
-            padding: 0 20px;
+        .topnav-actions { display: flex; gap: 10px; }
+
+        .btn-nav {
+            display: flex; align-items: center; gap: 6px;
+            padding: 7px 16px; border-radius: 8px;
+            font-size: 13px; font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer; transition: all 0.2s; text-decoration: none;
         }
 
+        .btn-back {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+        .btn-back:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
+
+        .btn-home {
+            background: var(--gold-dim);
+            border: 1px solid rgba(201,168,76,0.2);
+            color: var(--gold);
+        }
+        .btn-home:hover { background: rgba(201,168,76,0.2); }
+
+        /* ── CARD ── */
         .card {
-            background: white;
-            border-radius: 10px;
-            padding: 40px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px 36px;
+            width: 100%;
+            max-width: 540px;
+            margin-top: 60px;
+            position: relative;
+            z-index: 1;
         }
 
-        .card h2 {
-            font-size: 30px;
-            color: #2c3e50;
-            margin-bottom: 25px;
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .table-icon {
+            width: 56px; height: 56px;
+            border-radius: 14px;
+            background: var(--gold-dim);
+            border: 1px solid rgba(201,168,76,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 24px;
+        }
+
+        .card-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            color: var(--text);
+        }
+
+        .card-header p { font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+        .divider { height: 1px; background: var(--border); margin-bottom: 24px; }
+
+        /* INFO GRID */
+        .info-grid {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 28px;
         }
 
         .info-row {
             display: flex;
             justify-content: space-between;
-            padding: 15px 0;
-            border-bottom: 1px solid #eee;
-            font-size: 16px;
+            align-items: center;
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border);
         }
-
-        .info-row:last-of-type { border-bottom: none; }
+        .info-row:last-child { border-bottom: none; }
 
         .info-label {
-            color: #888;
-            font-weight: bold;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--text-dim);
         }
 
-        .info-value { color: #333; }
+        .info-value {
+            font-size: 14px;
+            font-weight: 500;
+            color: var(--text);
+        }
 
         .badge {
             display: inline-block;
             padding: 4px 12px;
             border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
+        .badge.disponible   { background: rgba(90,191,138,0.15); color: var(--green); border: 1px solid rgba(90,191,138,0.25); }
+        .badge.indisponible { background: rgba(224,90,90,0.15);  color: var(--red);   border: 1px solid rgba(224,90,90,0.25); }
 
-        .badge.disponible   { background: #d5f5e3; color: #27ae60; }
-        .badge.indisponible { background: #fadbd8; color: #e74c3c; }
+        /* BUTTONS */
+        .btn-actions { display: flex; flex-direction: column; gap: 10px; }
 
         .btn-reserver {
-            background: #e74c3c;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
             width: 100%;
-            margin-top: 25px;
+            padding: 14px;
+            background: linear-gradient(135deg, var(--gold), #a07828);
+            border: none;
+            border-radius: 10px;
+            color: #0a0a0f;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s, transform 0.15s;
         }
-
-        .btn-reserver:hover { background: #c0392b; }
+        .btn-reserver:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-reserver:disabled {
+            opacity: 0.4; cursor: not-allowed; transform: none;
+        }
 
         .btn-retour {
-            background: #95a5a6;
-            color: white;
-            border: none;
-            padding: 15px 30px;
-            border-radius: 5px;
-            font-size: 16px;
-            cursor: pointer;
             width: 100%;
-            margin-top: 10px;
+            padding: 13px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text-muted);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
         }
-
-        .btn-retour:hover { background: #7f8c8d; }
+        .btn-retour:hover { color: var(--text); border-color: rgba(255,255,255,0.15); }
 
         .loading {
             text-align: center;
-            padding: 50px;
-            color: #888;
-            font-size: 18px;
+            padding: 40px;
+            color: var(--text-dim);
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 
-    <!-- NAVBAR -->
-    <nav class="navbar">
-        <h1>🍽️ Restaurant</h1>
-        <div>
-            <a href="/">Accueil</a>
-            <a href="#">Mon Compte</a>
-        </div>
-    </nav>
-
-    <div class="container">
-        <div class="card" id="card-content">
-            <p class="loading">Chargement...</p>
-        </div>
+<!-- TOPNAV -->
+<nav class="topnav">
+    <a href="dashboard.html" class="brand">TableVista</a>
+    <div class="topnav-actions">
+        <a href="javascript:history.back()" class="btn-nav btn-back">← Retour</a>
+        <a href="dashboard.html" class="btn-nav btn-home">⊞ Accueil</a>
     </div>
+</nav>
 
-    <script>
-        // Récupérer l'id depuis l'URL
-        const urlParts = window.location.pathname.split('/');
-        const tableId  = urlParts.filter(part => part !== '').find(part => !isNaN(part));
-        window.onload = async function() {
-            try {
-                const response = await fetch(`/api/tables/${tableId}/`);
-                const data     = await response.json();
+<!-- CARD -->
+<div class="card">
+    <div id="card-content">
+        <p class="loading">Chargement...</p>
+    </div>
+</div>
 
-                if (data.status !== 'success') {
-                    document.getElementById('card-content').innerHTML =
-                        '<p class="loading">Table non trouvée 😕</p>';
-                    return;
-                }
+<script>
+    const token = localStorage.getItem('access');
+    if (!token) window.location.href = 'login.html';
 
-                const table = data.data;
+    // Récupérer l'id depuis l'URL (?id=3)
+    const params  = new URLSearchParams(window.location.search);
+    const tableId = params.get('id');
 
-                document.getElementById('card-content').innerHTML = `
-                    <h2>🪑 Table ${table.numero}</h2>
+    window.onload = async function() {
+        if (!tableId) {
+            document.getElementById('card-content').innerHTML =
+                '<p class="loading">⚠️ Aucune table spécifiée.</p>';
+            return;
+        }
 
+        try {
+            // ✅ URL corrigée vers restaurant-service port 8082
+            const response = await fetch(
+                `http://localhost:8082/api/tables/${tableId}/`,
+                { headers: { 'Authorization': 'Bearer ' + token } }
+            );
+            const data = await response.json();
+
+            if (data.status !== 'success') {
+                document.getElementById('card-content').innerHTML =
+                    '<p class="loading">😕 Table non trouvée.</p>';
+                return;
+            }
+
+            const table = data.data;
+            const estDisponible = table.statut === 'disponible';
+
+            document.getElementById('card-content').innerHTML = `
+                <div class="card-header">
+                    <div class="table-icon">🪑</div>
+                    <div>
+                        <h2>Table ${table.numero}</h2>
+                        <p>Informations détaillées</p>
+                    </div>
+                </div>
+                <div class="divider"></div>
+
+                <div class="info-grid">
                     <div class="info-row">
                         <span class="info-label">Numéro</span>
-                        <span class="info-value">${table.numero}</span>
+                        <span class="info-value" style="color:var(--gold);font-weight:600">${table.numero}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Capacité</span>
-                        <span class="info-value">${table.capacite} personnes</span>
+                        <span class="info-value">👥 ${table.capacite} personnes</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Localisation</span>
-                        <span class="info-value">${table.localisation}</span>
+                        <span class="info-value">📍 ${table.localisation.replace('_', ' ')}</span>
                     </div>
                     <div class="info-row">
                         <span class="info-label">Statut</span>
@@ -166,29 +303,32 @@
                             <span class="badge ${table.statut}">${table.statut}</span>
                         </span>
                     </div>
+                </div>
 
+                <div class="btn-actions">
                     <button class="btn-reserver"
-                        onclick="reserver(${table.id})">
-                        📅 Réserver cette table
+                        onclick="reserver(${table.id}, ${table.capacite})"
+                        ${!estDisponible ? 'disabled' : ''}>
+                        ${estDisponible ? '📅 Réserver cette table' : '❌ Table indisponible'}
                     </button>
-                    <button class="btn-retour"
-                        onclick="window.location.href='/'">
-                        ← Retour à l'accueil
-                    </button>
-                `;
+                    <a href="browse_table.html" class="btn-retour">
+                        ← Retour aux tables
+                    </a>
+                </div>
+            `;
 
-            } catch (error) {
-                document.getElementById('card-content').innerHTML =
-                    '<p class="loading">Erreur de connexion 😕</p>';
-            }
+        } catch (error) {
+            document.getElementById('card-content').innerHTML =
+                '<p class="loading">⚠️ Erreur de connexion au serveur.</p>';
         }
+    }
 
-        function reserver(tableId) {
-            // Rediriger vers le service de réservation (Membre 3)
-            window.location.href =
-                `http://localhost:8083/reservations/creer/?table_id=${tableId}`;
-        }
-    </script>
-
+    function reserver(tableId, capacite) {
+        // ✅ Pré-remplit les données et redirige vers reservation.html
+        localStorage.setItem('pre_table_id',     tableId);
+        localStorage.setItem('pre_nb_personnes', capacite);
+        window.location.href = 'reservation.html';
+    }
+</script>
 </body>
 </html>
