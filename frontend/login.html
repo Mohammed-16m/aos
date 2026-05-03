@@ -221,24 +221,25 @@
         })
         .then(res => res.json())
         .then(data => {
-            if (data.status === "success") {
-                localStorage.setItem("access",  data.data.access);
-                localStorage.setItem("refresh", data.data.refresh);
-                localStorage.setItem("role",    data.data.role);
-                localStorage.setItem("user_id", data.data.user_id);
-                msg.className   = "auth-message success";
-                msg.textContent = "Login successful! Redirecting...";
-                setTimeout(() => {
-                if (data.data.role === 'ADMIN') {
+    if (data.status === "success") {
+        localStorage.setItem("access",  data.data.access);
+        localStorage.setItem("refresh", data.data.refresh);
+        localStorage.setItem("role",    data.data.role);
+        localStorage.setItem("user_id", data.data.user_id);
+        localStorage.setItem("email",   email);  // ← email vient du formulaire
+        msg.className   = "auth-message success";
+        msg.textContent = "Login successful! Redirecting...";
+        setTimeout(() => {
+            if (data.data.role === 'ADMIN') {
                 window.location.href = 'http://localhost:3000/dashboard-admin.html';
-                } else {
-                window.location.href = 'http://localhost:3000/dashboard.html';
-                }
-                }, 1000);
             } else {
-                msg.textContent = data.message || "Login failed";
+                window.location.href = 'http://localhost:3000/dashboard.html';
             }
-        })
+        }, 1000);
+    } else {
+        msg.textContent = data.message || "Login failed";
+    }
+})
         .catch(() => {
             msg.textContent = "Connection error — make sure the server is running";
         });

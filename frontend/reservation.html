@@ -111,7 +111,9 @@
                 localStorage.setItem('access',   params.get('token'));
                 localStorage.setItem('refresh',  params.get('refresh') || '');
                 localStorage.setItem('user_id',  params.get('user_id') || '');
+                localStorage.setItem('email',    params.get('email')   || '');
                 window.history.replaceState({}, '', window.location.pathname);
+                
             }
         })();
 
@@ -136,8 +138,9 @@
                 table_id:     parseInt(table_id),
                 date:         date,
                 heure:        heure + ':00',
-                nb_personnes: parseInt(nb_personnes)
-            };
+                nb_personnes: parseInt(nb_personnes),
+                email:        localStorage.getItem('email') || ''  // ← ajouter
+                };
 
             try {
                 const res = await fetch('http://localhost:8083/api/reservations/', {

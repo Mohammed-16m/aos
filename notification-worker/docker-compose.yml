@@ -138,6 +138,7 @@ services:
     build: .
     ports:
       - "8084:8084"
+    
     environment:
       DB_HOST: db_notification
       DB_NAME: notification_db
@@ -147,10 +148,15 @@ services:
       EMAIL_USER: ${EMAIL_USER}
       EMAIL_PASSWORD: ${EMAIL_PASSWORD}
       EMAIL_FROM: ${EMAIL_FROM}
+      SMTP_HOST: smtp.gmail.com      # ← ajoute
+      SMTP_PORT: "587"               # ← ajoute
     depends_on:
       - db_notification
       - rabbitmq
       - consul
+
+
+
 
   # ─── Frontend ─────────────────────────────────────────────────────────────
   frontend:

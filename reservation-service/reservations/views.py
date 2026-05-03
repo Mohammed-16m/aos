@@ -38,22 +38,32 @@ def verifier_conflit(table_id, date, heure, exclude_id=None):
 
 
 def get_client_email(request):
-    # D'abord chercher dans le body de la requête
-    email = request.data.get('email', '')
-    if email:
-        return email
-    # Sinon appeler le auth service
+    # Extraire l'email directement du token JWT (plus fiable)
     try:
-        token = request.headers.get('Authorization', '')
+        auth_header = request.headers.get('Authorization', '')
+        if auth_header.startswith('Bearer '):
+            token = auth_header.split(' ', 1)[1]
+            secret = config('JWT_SECRET_KEY', default='secret-auth')
+            payload = jwt.decode(token, secret, algorithms=['HS256'])
+            email = payload.get('email', '')
+            if email:
+                return email
+    except Exception:
+        pass
+
+    # Fallback : appeler auth_service
+    try:
+        token_header = request.headers.get('Authorization', '')
         res = http_requests.get(
             'http://auth_service:8081/auth/me',
-            headers={'Authorization': token},
+            headers={'Authorization': token_header},
             timeout=3
         )
         if res.status_code == 200:
             return res.json().get('data', {}).get('email', '')
     except Exception:
         pass
+
     return ''
 
 
