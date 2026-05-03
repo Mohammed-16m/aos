@@ -3,188 +3,336 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mes Réservations</title>
+    <title>TableVista — Mes Réservations</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface2: #1a1a26;
+            --border: rgba(255,255,255,0.07);
+            --gold: #c9a84c;
+            --gold-dim: rgba(201,168,76,0.12);
+            --text: #f0ede8;
+            --text-muted: #8a8490;
+            --text-dim: #5a5560;
+            --red: #e05a5a;
+            --green: #5abf8a;
+            --sidebar-w: 260px;
+        }
+
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f5f5f5;
-            padding: 30px;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
         }
 
-        h2 {
-            color: #e74c3c;
-            margin-bottom: 25px;
-            font-size: 24px;
+        /* ── SIDEBAR ── */
+        .sidebar {
+            width: var(--sidebar-w);
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 20px;
+            position: fixed;
+            top: 0; left: 0;
         }
+
+        .sidebar-logo { text-align: center; margin-bottom: 36px; }
+        .sidebar-logo .brand { font-family: 'Playfair Display', serif; font-size: 22px; color: var(--gold); }
+        .sidebar-logo .tagline { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--text-dim); margin-top: 4px; }
+
+        .sidebar-divider { height: 1px; background: var(--border); margin-bottom: 24px; }
+        .sidebar-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-dim); padding: 0 12px; margin-bottom: 10px; }
+
+        .sidebar nav a {
+            display: flex; align-items: center; gap: 12px;
+            color: var(--text-muted); text-decoration: none;
+            padding: 11px 14px; border-radius: 10px;
+            font-size: 14px; font-weight: 500; margin-bottom: 4px;
+            transition: all 0.2s;
+        }
+
+        .sidebar nav a:hover { background: var(--gold-dim); color: var(--gold); }
+        .sidebar nav a.active { background: var(--gold-dim); color: var(--gold); border: 1px solid rgba(201,168,76,0.2); }
+        .sidebar nav a .icon { font-size: 16px; }
+
+        .sidebar-footer { margin-top: auto; }
+
+        .logout-btn {
+            display: flex; align-items: center; gap: 12px;
+            width: 100%; background: rgba(224,90,90,0.1);
+            border: 1px solid rgba(224,90,90,0.2); color: var(--red);
+            padding: 11px 14px; border-radius: 10px;
+            font-size: 14px; font-weight: 500; cursor: pointer;
+            transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+        }
+        .logout-btn:hover { background: rgba(224,90,90,0.2); }
+
+        /* ── MAIN ── */
+        .main { margin-left: var(--sidebar-w); padding: 36px 40px; width: 100%; min-height: 100vh; }
+
+        .page-header {
+            display: flex; justify-content: space-between;
+            align-items: center; margin-bottom: 28px;
+        }
+
+        .page-header h1 { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--text); }
+        .page-header p { color: var(--text-muted); font-size: 14px; margin-top: 4px; }
 
         .btn-nouvelle {
-            display: inline-block;
-            padding: 10px 20px;
-            background: #e74c3c;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            margin-bottom: 25px;
+            display: flex; align-items: center; gap: 8px;
+            background: var(--gold); color: #0a0a0f;
+            border: none; padding: 11px 22px; border-radius: 10px;
+            font-size: 14px; font-weight: 600; cursor: pointer;
+            font-family: 'DM Sans', sans-serif; text-decoration: none;
+            transition: opacity 0.2s; white-space: nowrap;
+        }
+        .btn-nouvelle:hover { opacity: 0.85; }
+
+        /* ── STATS ── */
+        .stats-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr);
+            gap: 16px; margin-bottom: 28px;
         }
 
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        .stat-card {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; padding: 18px 22px;
         }
 
-        th {
-            background: #e74c3c;
-            color: white;
-            padding: 14px;
-            text-align: left;
-            font-size: 14px;
+        .stat-card .stat-label { font-size: 11px; letter-spacing: 1px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
+        .stat-card .stat-value { font-family: 'Playfair Display', serif; font-size: 28px; color: var(--gold); }
+
+        /* ── TABLE ── */
+        .table-wrap {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 12px; overflow: hidden;
         }
 
-        td {
-            padding: 12px 14px;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 14px;
-            color: #333;
+        table { width: 100%; border-collapse: collapse; }
+
+        thead th {
+            background: var(--surface2); padding: 14px 18px;
+            text-align: left; font-size: 11px; font-weight: 600;
+            letter-spacing: 1px; text-transform: uppercase;
+            color: var(--text-dim); border-bottom: 1px solid var(--border);
         }
 
-        tr:last-child td { border-bottom: none; }
-        tr:hover td { background: #fafafa; }
-
-        .statut {
-            padding: 4px 10px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 12px;
+        tbody td {
+            padding: 14px 18px; font-size: 14px;
+            color: var(--text-muted); border-bottom: 1px solid var(--border);
         }
 
-        .CONFIRMEE  { background: #d4edda; color: #155724; }
-        .ANNULEE    { background: #f8d7da; color: #721c24; }
-        .EN_ATTENTE { background: #fff3cd; color: #856404; }
+        tbody tr:last-child td { border-bottom: none; }
+        tbody tr:hover td { background: rgba(255,255,255,0.02); color: var(--text); }
+
+        .badge {
+            display: inline-block; padding: 4px 12px;
+            border-radius: 20px; font-size: 11px; font-weight: 600;
+        }
+
+        .badge.CONFIRMEE  { background: rgba(90,191,138,0.15); color: var(--green); }
+        .badge.ANNULEE    { background: rgba(224,90,90,0.15);  color: var(--red); }
+        .badge.EN_ATTENTE { background: rgba(243,156,18,0.15); color: #f39c12; }
 
         .btn-annuler {
-            background: #dc3545;
-            color: white;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 13px;
+            background: rgba(224,90,90,0.12);
+            border: 1px solid rgba(224,90,90,0.2);
+            color: var(--red); padding: 6px 14px;
+            border-radius: 7px; font-size: 12px; font-weight: 600;
+            cursor: pointer; font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s;
         }
+        .btn-annuler:hover { background: rgba(224,90,90,0.22); }
 
-        .btn-annuler:hover { background: #c0392b; }
+        .empty-state { text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 14px; }
 
-        .vide {
-            text-align: center;
-            padding: 40px;
-            color: #999;
-            font-size: 16px;
+        /* TOAST */
+        .toast {
+            position: fixed; bottom: 28px; right: 28px;
+            padding: 14px 22px; border-radius: 10px;
+            font-size: 13px; font-weight: 500; z-index: 9999;
+            opacity: 0; transform: translateY(10px);
+            transition: all 0.3s; pointer-events: none;
         }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.success { background: rgba(90,191,138,0.15); border: 1px solid rgba(90,191,138,0.3); color: var(--green); }
+        .toast.error   { background: rgba(224,90,90,0.15);  border: 1px solid rgba(224,90,90,0.3);  color: var(--red); }
     </style>
 </head>
 <body>
-    <h2>📋 Mes Réservations</h2>
-    <a href="reservation.html" class="btn-nouvelle">+ Nouvelle réservation</a>
 
-    <table>
-        <thead>
-            <tr>
-                <th>#</th>
-                <th>Table</th>
-                <th>Date</th>
-                <th>Heure</th>
-                <th>Personnes</th>
-                <th>Statut</th>
-                <th>Action</th>
-            </tr>
-        </thead>
-        <tbody id="tbody">
-            <tr><td colspan="7" class="vide">Chargement...</td></tr>
-        </tbody>
-    </table>
+<div class="toast" id="toast"></div>
 
-    <script>
-        // ── Récupère le token depuis l'URL si redirigé depuis le dashboard ──
-        (function() {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('token')) {
-                localStorage.setItem('access',   params.get('token'));
-                localStorage.setItem('refresh',  params.get('refresh') || '');
-                localStorage.setItem('user_id',  params.get('user_id') || '');
-                window.history.replaceState({}, '', window.location.pathname);
-            }
-        })();
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <div class="sidebar-logo">
+        <div class="brand">TableVista</div>
+        <div class="tagline">Espace Client</div>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-label">Navigation</div>
+    <nav>
+        <a href="dashboard.html">
+            <span class="icon">⊞</span> Dashboard
+        </a>
+        <a href="index.html">
+            <span class="icon">🍽️</span> Tables disponibles
+        </a>
+        <a href="dashboard_client.html" class="active">
+            <span class="icon">📋</span> Mes réservations
+        </a>
+        <a href="reservation.html">
+            <span class="icon">➕</span> Nouvelle réservation
+        </a>
+    </nav>
+    <div class="sidebar-footer">
+        <button class="logout-btn" onclick="logout()">
+            <span>⎋</span> Déconnexion
+        </button>
+    </div>
+</div>
 
-        const token     = localStorage.getItem('access');
-        const client_id = localStorage.getItem('user_id') || 1;
+<!-- MAIN -->
+<div class="main">
+    <div class="page-header">
+        <div>
+            <h1>Mes Réservations</h1>
+            <p>Gérez vos réservations en cours et passées</p>
+        </div>
+        <a href="reservation.html" class="btn-nouvelle">➕ Nouvelle réservation</a>
+    </div>
 
-        async function charger() {
-            try {
-                const res = await fetch(
-                    `http://localhost:8083/api/reservations/client/${client_id}/`,
-                    { headers: { 'Authorization': 'Bearer ' + token } }
-                );
-                const data = await res.json();
-                const tbody = document.getElementById('tbody');
+    <!-- STATS -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-label">Total</div>
+            <div class="stat-value" id="stat-total">—</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Confirmées</div>
+            <div class="stat-value" id="stat-confirmees" style="color:var(--green)">—</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Annulées</div>
+            <div class="stat-value" id="stat-annulees" style="color:var(--red)">—</div>
+        </div>
+    </div>
 
-                if (!data.data || data.data.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="7" class="vide">Aucune réservation trouvée.</td></tr>';
-                    return;
-                }
+    <!-- TABLE -->
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>#ID</th><th>Table</th><th>Date</th>
+                    <th>Heure</th><th>Personnes</th><th>Statut</th><th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <tr><td colspan="7" class="empty-state">Chargement...</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
 
-                tbody.innerHTML = '';
-                data.data.forEach(r => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>#${r.id}</td>
-                            <td>Table ${r.table_id}</td>
-                            <td>${r.date}</td>
-                            <td>${r.heure}</td>
-                            <td>${r.nb_personnes} pers.</td>
-                            <td><span class="statut ${r.statut}">${r.statut}</span></td>
-                            <td>
-                                ${r.statut !== 'ANNULEE' ? `
-                                    <button class="btn-annuler" onclick="annuler(${r.id})">
-                                        Annuler
-                                    </button>
-                                ` : '—'}
-                            </td>
-                        </tr>`;
-                });
-            } catch (err) {
-                document.getElementById('tbody').innerHTML =
-                    '<tr><td colspan="7" class="vide">❌ Impossible de contacter le serveur.</td></tr>';
-            }
+<script>
+    // Récupère le token depuis l'URL si redirigé
+    (function() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('token')) {
+            localStorage.setItem('access',  params.get('token'));
+            localStorage.setItem('refresh', params.get('refresh') || '');
+            localStorage.setItem('user_id', params.get('user_id') || '');
+            window.history.replaceState({}, '', window.location.pathname);
         }
+    })();
 
-        async function annuler(id) {
-            if (!confirm('Confirmer l\'annulation de la réservation #' + id + ' ?')) return;
-            try {
-                const res = await fetch(
-                    `http://localhost:8083/api/reservations/${id}/`,
-                    {
-                        method: 'DELETE',
-                        headers: { 'Authorization': 'Bearer ' + token }
-                    }
-                );
-                const data = await res.json();
-                if (data.status === 'success') {
-                    charger();
-                } else {
-                    alert('Erreur : ' + data.message);
-                }
-            } catch (err) {
-                alert('❌ Impossible de contacter le serveur.');
+    const token     = localStorage.getItem('access');
+    const client_id = localStorage.getItem('user_id') || 1;
+
+    if (!token) window.location.href = 'login.html';
+
+    async function charger() {
+        try {
+            const res  = await fetch(
+                `http://localhost:8083/api/reservations/client/${client_id}/`,
+                { headers: { 'Authorization': 'Bearer ' + token } }
+            );
+            const data = await res.json();
+            const tbody = document.getElementById('tbody');
+            const reservations = data.data || [];
+
+            // Stats
+            document.getElementById('stat-total').textContent     = reservations.length;
+            document.getElementById('stat-confirmees').textContent = reservations.filter(r => r.statut === 'CONFIRMEE').length;
+            document.getElementById('stat-annulees').textContent   = reservations.filter(r => r.statut === 'ANNULEE').length;
+
+            if (!reservations.length) {
+                tbody.innerHTML = '<tr><td colspan="7" class="empty-state">📭 Aucune réservation trouvée</td></tr>';
+                return;
             }
-        }
 
-        charger();
-    </script>
+            tbody.innerHTML = reservations.map(r => `
+                <tr>
+                    <td style="color:var(--gold);font-weight:600">#${r.id}</td>
+                    <td>Table ${r.table_id}</td>
+                    <td>${r.date}</td>
+                    <td>${r.heure}</td>
+                    <td>${r.nb_personnes} pers.</td>
+                    <td><span class="badge ${r.statut}">${r.statut.replace('_', ' ')}</span></td>
+                    <td>
+                        ${r.statut !== 'ANNULEE' ? `
+                            <button class="btn-annuler" onclick="annuler(${r.id})">🗑️ Annuler</button>
+                        ` : '—'}
+                    </td>
+                </tr>
+            `).join('');
+
+        } catch (err) {
+            document.getElementById('tbody').innerHTML =
+                '<tr><td colspan="7" class="empty-state">⚠️ Impossible de contacter le serveur</td></tr>';
+        }
+    }
+
+    async function annuler(id) {
+        if (!confirm(`Confirmer l'annulation de la réservation #${id} ?`)) return;
+        try {
+            const res  = await fetch(`http://localhost:8083/api/reservations/${id}/`, {
+                method: 'DELETE',
+                headers: { 'Authorization': 'Bearer ' + token }
+            });
+            const data = await res.json();
+            if (data.status === 'success') {
+                afficherToast('✅ Réservation annulée', 'success');
+                charger();
+            } else {
+                afficherToast('❌ ' + data.message, 'error');
+            }
+        } catch (err) {
+            afficherToast('❌ Impossible de contacter le serveur', 'error');
+        }
+    }
+
+    function afficherToast(msg, type) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = `toast ${type} show`;
+        setTimeout(() => t.className = 'toast', 3000);
+    }
+
+    function logout() {
+        localStorage.clear();
+        window.location.href = 'login.html';
+    }
+
+    charger();
+</script>
 </body>
 </html>

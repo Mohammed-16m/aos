@@ -3,180 +3,423 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Réserver une table</title>
+    <title>TableVista — Réserver une table</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface2: #1a1a26;
+            --border: rgba(255,255,255,0.07);
+            --gold: #c9a84c;
+            --gold-dim: rgba(201,168,76,0.12);
+            --text: #f0ede8;
+            --text-muted: #8a8490;
+            --text-dim: #5a5560;
+            --red: #e05a5a;
+            --green: #5abf8a;
+        }
         * { margin: 0; padding: 0; box-sizing: border-box; }
-
         body {
-            font-family: 'Segoe UI', sans-serif;
-            background: #f5f5f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            position: relative;
+            overflow-y: auto;
         }
-
-        .container {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        body::before {
+            content: '';
+            position: absolute;
+            width: 500px; height: 500px;
+            background: radial-gradient(circle, rgba(201,168,76,0.06), transparent);
+            top: -150px; right: -150px;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .topnav {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 60px;
+            background: rgba(10,10,15,0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            z-index: 100;
+        }
+        .topnav .brand {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            color: var(--gold);
+            text-decoration: none;
+        }
+        .topnav-actions { display: flex; gap: 10px; }
+        .btn-nav {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 16px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            font-family: 'DM Sans', sans-serif;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-decoration: none;
+        }
+        .btn-back {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+        .btn-back:hover { color: var(--text); }
+        .btn-home {
+            background: var(--gold-dim);
+            border: 1px solid rgba(201,168,76,0.2);
+            color: var(--gold);
+        }
+        .btn-home:hover { background: rgba(201,168,76,0.2); }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 40px 36px;
             width: 100%;
-            max-width: 500px;
+            max-width: 480px;
+            margin-top: 60px;
+            position: relative;
+            z-index: 1;
         }
-
-        h2 {
-            text-align: center;
-            color: #e74c3c;
-            margin-bottom: 30px;
-            font-size: 24px;
+        .card-header { text-align: center; margin-bottom: 32px; }
+        .card-header .icon { font-size: 40px; margin-bottom: 12px; display: block; }
+        .card-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px;
+            color: var(--text);
+            margin-bottom: 6px;
         }
-
-        label {
+        .card-header p { font-size: 13px; color: var(--text-muted); }
+        .divider { height: 1px; background: var(--border); margin-bottom: 28px; }
+        .form-group { margin-bottom: 18px; }
+        .form-group label {
             display: block;
-            margin-bottom: 5px;
-            color: #555;
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: 8px;
+        }
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 12px 14px;
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            color: var(--text);
+            font-family: 'DM Sans', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .form-group select option { background: var(--surface2); color: var(--text); }
+        .form-group input::placeholder { color: var(--text-dim); }
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: rgba(201,168,76,0.5);
+            box-shadow: 0 0 0 3px rgba(201,168,76,0.06);
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* ── CARDS DES TABLES ── */
+        .tables-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-bottom: 6px;
+        }
+        .table-option {
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 12px 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: center;
+        }
+        .table-option:hover {
+            border-color: rgba(201,168,76,0.4);
+            background: rgba(201,168,76,0.05);
+        }
+        .table-option.selected {
+            border-color: var(--gold);
+            background: var(--gold-dim);
+        }
+        .table-option .t-numero {
+            font-family: 'Playfair Display', serif;
+            font-size: 16px;
+            color: var(--text);
             font-weight: 600;
         }
-
-        input, select {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 20px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 15px;
-            transition: border 0.3s;
+        .table-option .t-info {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 3px;
+        }
+        .table-option .t-loc {
+            font-size: 10px;
+            color: var(--text-dim);
+            margin-top: 2px;
+            text-transform: capitalize;
+        }
+        .loading-tables {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-dim);
+            font-size: 13px;
         }
 
-        input:focus, select:focus {
-            outline: none;
-            border-color: #e74c3c;
-        }
-
-        button {
+        .btn-submit {
             width: 100%;
             padding: 14px;
-            background: #e74c3c;
-            color: white;
+            background: linear-gradient(135deg, var(--gold), #a07828);
             border: none;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 10px;
+            color: #0a0a0f;
+            font-family: 'DM Sans', sans-serif;
+            font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            margin-top: 8px;
+            transition: opacity 0.2s, transform 0.15s;
         }
-
-        button:hover { background: #c0392b; }
-
+        .btn-submit:hover { opacity: 0.9; transform: translateY(-1px); }
+        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
         .message {
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 15px;
+            margin-top: 16px;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 500;
             text-align: center;
-            font-weight: 600;
             display: none;
         }
-
-        .success { background: #d4edda; color: #155724; display: block; }
-        .error   { background: #f8d7da; color: #721c24; display: block; }
+        .message.success {
+            display: block;
+            background: rgba(90,191,138,0.12);
+            border: 1px solid rgba(90,191,138,0.25);
+            color: var(--green);
+        }
+        .message.error {
+            display: block;
+            background: rgba(224,90,90,0.12);
+            border: 1px solid rgba(224,90,90,0.25);
+            color: var(--red);
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h2>🍽️ Réserver une table</h2>
 
-        <label>Numéro de table :</label>
-        <input type="number" id="table_id" placeholder="Ex: 3" min="1" required>
+<nav class="topnav">
+    <a href="dashboard.html" class="brand">TableVista</a>
+    <div class="topnav-actions">
+        <a href="javascript:history.back()" class="btn-nav btn-back">← Retour</a>
+        <a href="dashboard.html" class="btn-nav btn-home">⊞ Accueil</a>
+    </div>
+</nav>
 
-        <label>Date :</label>
-        <input type="date" id="date" required>
+<div class="card">
+    <div class="card-header">
+        <span class="icon">🍽️</span>
+        <h2>Réserver une table</h2>
+        <p>Choisissez votre créneau et confirmez votre réservation</p>
+    </div>
+    <div class="divider"></div>
 
-        <label>Heure :</label>
-        <input type="time" id="heure" required>
-
-        <label>Nombre de personnes :</label>
-        <input type="number" id="nb_personnes" placeholder="Ex: 4" min="1" max="20" required>
-
-        <button onclick="creerReservation()">Confirmer la réservation</button>
-
-        <div class="message" id="message"></div>
+    <!-- Date + Heure -->
+    <div class="form-row">
+        <div class="form-group">
+            <label>Date</label>
+            <input type="date" id="date" onchange="chargerTables()">
+        </div>
+        <div class="form-group">
+            <label>Heure</label>
+            <input type="time" id="heure" onchange="chargerTables()">
+        </div>
     </div>
 
-    <script>
-        // ── Récupère le token depuis l'URL si redirigé depuis le dashboard ──
-        (function() {
-            const params = new URLSearchParams(window.location.search);
-            if (params.get('token')) {
-                localStorage.setItem('access',   params.get('token'));
-                localStorage.setItem('refresh',  params.get('refresh') || '');
-                localStorage.setItem('user_id',  params.get('user_id') || '');
-                localStorage.setItem('email',    params.get('email')   || '');
-                window.history.replaceState({}, '', window.location.pathname);
-                
-            }
-        })();
+    <!-- Nombre de personnes -->
+    <div class="form-group">
+        <label>Nombre de personnes</label>
+        <input type="number" id="nb_personnes" placeholder="Ex: 4"
+               min="1" max="20" onchange="chargerTables()">
+    </div>
 
-        async function creerReservation() {
-    
-            const token     = localStorage.getItem('access');
-            const client_id = parseInt(localStorage.getItem('user_id')) || 1;
+    <!-- Tables disponibles -->
+    <div class="form-group">
+        <label>Choisir une table</label>
+        <div id="tables-container">
+            <p class="loading-tables">
+                Sélectionnez une date, une heure et le nombre de personnes
+                pour voir les tables disponibles.
+            </p>
+        </div>
+        <input type="hidden" id="table_id">
+    </div>
 
-            const table_id    = document.getElementById('table_id').value;
-            const date        = document.getElementById('date').value;
-            const heure       = document.getElementById('heure').value;
-            const nb_personnes = document.getElementById('nb_personnes').value;
+    <button class="btn-submit" id="btn-confirmer"
+            onclick="creerReservation()" disabled>
+        Confirmer la réservation
+    </button>
 
-            // Vérifier que tous les champs sont remplis
-            if (!table_id || !date || !heure || !nb_personnes) {
-                afficherMessage('Veuillez remplir tous les champs.', 'error');
+    <div class="message" id="message"></div>
+</div>
+
+<script>
+    // ── Init depuis URL params ──
+    (function() {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('token')) {
+            localStorage.setItem('access',  params.get('token'));
+            localStorage.setItem('refresh', params.get('refresh') || '');
+            localStorage.setItem('user_id', params.get('user_id') || '');
+            localStorage.setItem('email',   params.get('email')   || '');
+            window.history.replaceState({}, '', window.location.pathname);
+        }
+        // Pré-remplir depuis URL si redirigé depuis la page accueil
+        if (params.get('date'))  document.getElementById('date').value  = params.get('date');
+        if (params.get('heure')) document.getElementById('heure').value = params.get('heure');
+    })();
+
+    // Date minimum = aujourd'hui
+    document.getElementById('date').min = new Date().toISOString().split('T')[0];
+
+    let tableSelectionnee = null;
+
+    // ── Charger les tables disponibles ──
+    async function chargerTables() {
+        const date         = document.getElementById('date').value;
+        const heure        = document.getElementById('heure').value;
+        const nb_personnes = document.getElementById('nb_personnes').value;
+
+        if (!date || !heure || !nb_personnes) return;
+
+        const container = document.getElementById('tables-container');
+        container.innerHTML = '<p class="loading-tables">Chargement des tables...</p>';
+
+        try {
+            const res = await fetch(
+                `http://localhost:8082/api/tables/disponibles/?date=${date}&heure=${heure}&nb_personnes=${nb_personnes}`
+            );
+            const data = await res.json();
+            const tables = data.data || [];
+
+            if (tables.length === 0) {
+                container.innerHTML =
+                    '<p class="loading-tables">😕 Aucune table disponible pour ce créneau.</p>';
                 return;
             }
 
-            const body = {
-                client_id:    client_id,
-                table_id:     parseInt(table_id),
-                date:         date,
-                heure:        heure + ':00',
-                nb_personnes: parseInt(nb_personnes),
-                email:        localStorage.getItem('email') || ''  // ← ajouter
-                };
+            container.innerHTML = `<div class="tables-grid">
+                ${tables.map(t => `
+                    <div class="table-option" id="table-opt-${t.id}"
+                         onclick="selectionnerTable(${t.id}, '${t.numero}')">
+                        <div class="t-numero">Table ${t.numero}</div>
+                        <div class="t-info">👥 ${t.capacite} personnes</div>
+                        <div class="t-loc">📍 ${t.localisation.replace('_', ' ')}</div>
+                    </div>
+                `).join('')}
+            </div>`;
 
-            try {
-                const res = await fetch('http://localhost:8083/api/reservations/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': 'Bearer ' + token
-                    },
-                    body: JSON.stringify(body)
-                });
+        } catch (err) {
+            container.innerHTML =
+                '<p class="loading-tables">❌ Impossible de contacter le serveur.</p>';
+        }
+    }
 
-                const data = await res.json();
+    // ── Sélectionner une table ──
+    function selectionnerTable(id, numero) {
+        // Désélectionner l'ancienne
+        document.querySelectorAll('.table-option').forEach(el => {
+            el.classList.remove('selected');
+        });
 
-                if (data.status === 'success') {
-                    localStorage.setItem('last_reservation', JSON.stringify(data.data));
-                    afficherMessage('✅ Réservation créée ! Redirection...', 'success');
-                    setTimeout(() => {
-                        window.location.href = 'confirmation.html';
-                    }, 1500);
-                } else {
-                    afficherMessage('❌ ' + (data.message || 'Erreur lors de la réservation.'), 'error');
-                }
-            } catch (err) {
-                afficherMessage('❌ Impossible de contacter le serveur.', 'error');
+        // Sélectionner la nouvelle
+        document.getElementById(`table-opt-${id}`).classList.add('selected');
+        document.getElementById('table_id').value = id;
+        tableSelectionnee = id;
+
+        // Activer le bouton
+        document.getElementById('btn-confirmer').disabled = false;
+        document.getElementById('btn-confirmer').textContent =
+            `✅ Confirmer — Table ${numero}`;
+    }
+
+    // ── Créer la réservation ──
+    async function creerReservation() {
+        const token        = localStorage.getItem('access');
+        const client_id    = parseInt(localStorage.getItem('user_id')) || 1;
+        const table_id     = document.getElementById('table_id').value;
+        const date         = document.getElementById('date').value;
+        const heure        = document.getElementById('heure').value;
+        const nb_personnes = document.getElementById('nb_personnes').value;
+
+        if (!table_id || !date || !heure || !nb_personnes) {
+            afficherMessage('Veuillez remplir tous les champs.', 'error');
+            return;
+        }
+
+        const body = {
+            client_id:    client_id,
+            table_id:     parseInt(table_id),
+            date:         date,
+            heure:        heure + ':00',
+            nb_personnes: parseInt(nb_personnes),
+            email:        localStorage.getItem('email') || ''
+        };
+
+        try {
+            const res = await fetch('http://localhost:8083/api/reservations/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + token
+                },
+                body: JSON.stringify(body)
+            });
+
+            const data = await res.json();
+
+            if (data.status === 'success') {
+                localStorage.setItem('last_reservation', JSON.stringify(data.data));
+                afficherMessage('✅ Réservation créée ! Redirection...', 'success');
+                setTimeout(() => window.location.href = 'confirmation.html', 1500);
+            } else {
+                afficherMessage('❌ ' + (data.message || 'Erreur.'), 'error');
             }
+        } catch (err) {
+            afficherMessage('❌ Impossible de contacter le serveur.', 'error');
         }
+    }
 
-        function afficherMessage(texte, type) {
-            const msg = document.getElementById('message');
-            msg.textContent = texte;
-            msg.className = 'message ' + type;
-        }
-
-        // Mettre la date minimum = aujourd'hui
-        const today = new Date().toISOString().split('T')[0];
-        document.getElementById('date').min = today;
-    </script>
+    function afficherMessage(texte, type) {
+        const msg = document.getElementById('message');
+        msg.textContent = texte;
+        msg.className = 'message ' + type;
+    }
+</script>
 </body>
 </html>
