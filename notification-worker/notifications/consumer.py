@@ -14,6 +14,42 @@ from notifications.email_service import send_email
 from decouple import config
 
 def callback(ch, method, properties, body):
+    print(f"\n[→] Message reçu : {body}")
+    data = json.loads(body)
+
+    email = data.get('email', '')
+
+    try:
+        if not email:
+            print(f"[!] Email manquant — notification ignorée")
+            ch.basic_ack(delivery_tag=method.delivery_tag)
+            return
+
+        send_email(
+            to=email,
+            type=data['type'],
+            reservation_id=data.get('reservation_id', 0),
+            table_id=data.get('table_id', '?'),
+            date=data.get('date', '?'),
+            heure=data.get('heure', '?'),
+        )
+        statut = 'ENVOYEE'
+        print(f"[✓] Email envoyé avec succès à {email}")
+
+    except Exception as e:
+        statut = 'ECHOUEE'
+        print(f"[✗] Échec envoi email : {e}")
+
+    Notification.objects.create(
+        reservation_id=data.get('reservation_id', 0),
+        client_email=email,
+        type=data['type'],
+        statut=statut,
+    )
+    print(f"[✓] Notification sauvegardée en base")
+    ch.basic_ack(delivery_tag=method.delivery_tag)
+
+    
     """
     Cette fonction est appelée automatiquement
     chaque fois qu'un message arrive dans la queue

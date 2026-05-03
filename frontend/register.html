@@ -229,6 +229,7 @@
                 localStorage.setItem("refresh", data.data.refresh);
                 localStorage.setItem("role",    data.data.role);
                 localStorage.setItem("user_id", data.data.user_id);
+                localStorage.setItem("email",   email);
                 msg.className = "auth-message success";
                 msg.textContent = "Account created! Redirecting...";
                 setTimeout(() => {

@@ -1,4 +1,5 @@
 import jwt
+import requests as http_requests
 from django.conf import settings
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -36,6 +37,26 @@ def verifier_conflit(table_id, date, heure, exclude_id=None):
     return qs.exists()
 
 
+def get_client_email(request):
+    # D'abord chercher dans le body de la requête
+    email = request.data.get('email', '')
+    if email:
+        return email
+    # Sinon appeler le auth service
+    try:
+        token = request.headers.get('Authorization', '')
+        res = http_requests.get(
+            'http://auth_service:8081/auth/me',
+            headers={'Authorization': token},
+            timeout=3
+        )
+        if res.status_code == 200:
+            return res.json().get('data', {}).get('email', '')
+    except Exception:
+        pass
+    return ''
+
+
 class CreerReservationView(APIView):
     def post(self, request):
         user = valider_token(request)
@@ -62,13 +83,17 @@ class CreerReservationView(APIView):
 
         reservation = Reservation.objects.create(**data, statut='CONFIRMEE')
 
+        # Récupérer l'email du client
+        email = get_client_email(request)
+
         publier_message({
             'type': 'CONFIRMATION',
             'client_id': reservation.client_id,
             'table_id': reservation.table_id,
             'date': str(reservation.date),
             'heure': str(reservation.heure),
-            'reservation_id': reservation.id
+            'reservation_id': reservation.id,
+            'email': email
         })
 
         return Response(
@@ -154,13 +179,17 @@ class DetailReservationView(APIView):
         reservation.statut = 'ANNULEE'
         reservation.save()
 
+        # Récupérer l'email du client
+        email = get_client_email(request)
+
         publier_message({
             'type': 'ANNULATION',
             'client_id': reservation.client_id,
             'table_id': reservation.table_id,
             'date': str(reservation.date),
             'heure': str(reservation.heure),
-            'reservation_id': reservation.id
+            'reservation_id': reservation.id,
+            'email': email
         })
 
         return Response(
