@@ -44,7 +44,7 @@
         .table-wrap { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; }
         table { width: 100%; border-collapse: collapse; }
         thead th { background: var(--surface2); padding: 14px 18px; text-align: left; font-size: 11px; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-dim); border-bottom: 1px solid var(--border); }
-        tbody td { padding: 14px 18px; font-size: 14px; color: var(--text-muted); border-bottom: 1px solid var(--border); }
+        tbody td { padding: 14px 18px; font-size: 14px; color: var(--text-muted); border-bottom: 1px solid var(--border); vertical-align: middle; }
         tbody tr:last-child td { border-bottom: none; }
         tbody tr:hover td { background: rgba(255,255,255,0.02); color: var(--text); }
         .badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 600; }
@@ -52,6 +52,115 @@
         .badge.CONFIRMEE  { background: rgba(90,191,138,0.15); color: var(--green); }
         .badge.ANNULEE    { background: rgba(224,90,90,0.15);  color: var(--red); }
         .empty-state { text-align: center; padding: 60px 20px; color: var(--text-dim); font-size: 14px; }
+
+        /* Action buttons */
+        .actions { display: flex; gap: 8px; }
+        .btn-edit {
+            background: rgba(201,168,76,0.12); color: var(--gold);
+            border: 1px solid rgba(201,168,76,0.25); padding: 6px 14px;
+            border-radius: 7px; font-size: 12px; font-weight: 600;
+            cursor: pointer; font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .btn-edit:hover { background: rgba(201,168,76,0.22); }
+        .btn-cancel {
+            background: rgba(224,90,90,0.1); color: var(--red);
+            border: 1px solid rgba(224,90,90,0.25); padding: 6px 14px;
+            border-radius: 7px; font-size: 12px; font-weight: 600;
+            cursor: pointer; font-family: 'DM Sans', sans-serif;
+            transition: all 0.2s; white-space: nowrap;
+        }
+        .btn-cancel:hover { background: rgba(224,90,90,0.2); }
+        .btn-disabled {
+            opacity: 0.3; cursor: not-allowed; pointer-events: none;
+        }
+
+        /* Modal overlay */
+        .modal-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.7); z-index: 1000;
+            align-items: center; justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+        .modal {
+            background: var(--surface); border: 1px solid var(--border);
+            border-radius: 16px; padding: 32px; width: 460px;
+            max-width: 95vw; position: relative;
+        }
+        .modal-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px; }
+        .modal-header h2 { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--text); }
+        .modal-close { background: none; border: none; color: var(--text-muted); font-size: 22px; cursor: pointer; line-height: 1; padding: 4px; }
+        .modal-close:hover { color: var(--text); }
+        .form-group { margin-bottom: 18px; }
+        .form-group label { display: block; font-size: 12px; font-weight: 600; letter-spacing: 0.8px; text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px; }
+        .form-group input, .form-group select {
+            width: 100%; background: var(--surface2); border: 1px solid var(--border);
+            border-radius: 9px; color: var(--text); padding: 10px 14px;
+            font-size: 14px; font-family: 'DM Sans', sans-serif; outline: none;
+            transition: border-color 0.2s;
+        }
+        .form-group input:focus, .form-group select:focus { border-color: rgba(201,168,76,0.4); }
+        .form-group select option { background: var(--surface2); }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .modal-footer { display: flex; gap: 10px; margin-top: 28px; }
+        .btn-save {
+            flex: 1; background: var(--gold); color: #0a0a0f;
+            border: none; padding: 12px; border-radius: 9px;
+            font-size: 14px; font-weight: 700; cursor: pointer;
+            font-family: 'DM Sans', sans-serif; transition: opacity 0.2s;
+        }
+        .btn-save:hover { opacity: 0.88; }
+        .btn-save:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-cancel-modal {
+            flex: 1; background: var(--surface2); color: var(--text-muted);
+            border: 1px solid var(--border); padding: 12px; border-radius: 9px;
+            font-size: 14px; font-weight: 500; cursor: pointer;
+            font-family: 'DM Sans', sans-serif;
+        }
+        .btn-cancel-modal:hover { color: var(--text); }
+
+        /* Toast notification */
+        .toast {
+            position: fixed; bottom: 28px; right: 28px;
+            padding: 14px 22px; border-radius: 10px;
+            font-size: 14px; font-weight: 500; z-index: 2000;
+            opacity: 0; transform: translateY(10px);
+            transition: all 0.3s; pointer-events: none;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+        .toast.success { background: rgba(90,191,138,0.15); color: var(--green); border: 1px solid rgba(90,191,138,0.3); }
+        .toast.error   { background: rgba(224,90,90,0.15);  color: var(--red);   border: 1px solid rgba(224,90,90,0.3); }
+
+        /* Confirm dialog */
+        .confirm-overlay {
+            display: none; position: fixed; inset: 0;
+            background: rgba(0,0,0,0.7); z-index: 1100;
+            align-items: center; justify-content: center;
+        }
+        .confirm-overlay.open { display: flex; }
+        .confirm-box {
+            background: var(--surface); border: 1px solid rgba(224,90,90,0.3);
+            border-radius: 14px; padding: 28px 28px 24px;
+            width: 380px; max-width: 95vw; text-align: center;
+        }
+        .confirm-icon { font-size: 32px; margin-bottom: 12px; }
+        .confirm-box h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--text); margin-bottom: 8px; }
+        .confirm-box p { color: var(--text-muted); font-size: 14px; margin-bottom: 22px; line-height: 1.5; }
+        .confirm-actions { display: flex; gap: 10px; }
+        .btn-confirm-yes {
+            flex: 1; background: rgba(224,90,90,0.15); color: var(--red);
+            border: 1px solid rgba(224,90,90,0.3); padding: 11px;
+            border-radius: 8px; font-size: 14px; font-weight: 600;
+            cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+        }
+        .btn-confirm-yes:hover { background: rgba(224,90,90,0.25); }
+        .btn-confirm-no {
+            flex: 1; background: var(--surface2); color: var(--text-muted);
+            border: 1px solid var(--border); padding: 11px;
+            border-radius: 8px; font-size: 14px; font-weight: 500;
+            cursor: pointer; font-family: 'DM Sans', sans-serif;
+        }
+        .btn-confirm-no:hover { color: var(--text); }
     </style>
 </head>
 <body>
@@ -105,18 +214,79 @@
                 <tr>
                     <th>#ID</th><th>Client ID</th><th>Table</th>
                     <th>Date</th><th>Heure</th><th>Personnes</th><th>Statut</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody id="reservations-body">
-                <tr><td colspan="7" class="empty-state">Chargement...</td></tr>
+                <tr><td colspan="8" class="empty-state">Chargement...</td></tr>
             </tbody>
         </table>
     </div>
 </div>
 
+<!-- Modal Modification -->
+<div class="modal-overlay" id="modal-edit">
+    <div class="modal">
+        <div class="modal-header">
+            <h2>Modifier la réservation</h2>
+            <button class="modal-close" onclick="fermerModal()">✕</button>
+        </div>
+        <input type="hidden" id="edit-id">
+        <div class="form-row">
+            <div class="form-group">
+                <label>Date</label>
+                <input type="date" id="edit-date">
+            </div>
+            <div class="form-group">
+                <label>Heure</label>
+                <input type="time" id="edit-heure">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group">
+                <label>Nombre de personnes</label>
+                <input type="number" id="edit-nb-personnes" min="1" max="20">
+            </div>
+            <div class="form-group">
+                <label>Statut</label>
+                <select id="edit-statut">
+                    <option value="EN_ATTENTE">En attente</option>
+                    <option value="CONFIRMEE">Confirmée</option>
+                    <option value="ANNULEE">Annulée</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>Numéro de table</label>
+            <input type="number" id="edit-table" min="1">
+        </div>
+        <div class="modal-footer">
+            <button class="btn-cancel-modal" onclick="fermerModal()">Annuler</button>
+            <button class="btn-save" id="btn-save" onclick="sauvegarderModification()">💾 Enregistrer</button>
+        </div>
+    </div>
+</div>
+
+<!-- Confirm Annulation -->
+<div class="confirm-overlay" id="confirm-annulation">
+    <div class="confirm-box">
+        <div class="confirm-icon">⚠️</div>
+        <h3>Annuler cette réservation ?</h3>
+        <p>La réservation <strong id="confirm-id-label"></strong> sera marquée comme <strong>ANNULÉE</strong>. Cette action peut être modifiée ultérieurement.</p>
+        <div class="confirm-actions">
+            <button class="btn-confirm-no" onclick="fermerConfirm()">Non, garder</button>
+            <button class="btn-confirm-yes" id="btn-confirm-oui" onclick="confirmerAnnulation()">Oui, annuler</button>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
 <script>
     const token = localStorage.getItem('access');
     const role  = localStorage.getItem('role');
+    let reservationAnnuler = null;
 
     if (!token || role !== 'ADMIN') {
         window.location.href = 'login.html';
@@ -135,7 +305,7 @@
             const res  = await fetch(url, { headers: { 'Authorization': 'Bearer ' + token } });
             const data = await res.json();
             if (res.status === 403) {
-                document.getElementById('reservations-body').innerHTML = '<tr><td colspan="7" class="empty-state">🔒 Accès refusé</td></tr>';
+                document.getElementById('reservations-body').innerHTML = '<tr><td colspan="8" class="empty-state">🔒 Accès refusé</td></tr>';
                 return;
             }
             const reservations = data.data || [];
@@ -144,21 +314,140 @@
             document.getElementById('stat-attente').textContent     = reservations.filter(r => r.statut === 'EN_ATTENTE').length;
             const tbody = document.getElementById('reservations-body');
             if (!reservations.length) {
-                tbody.innerHTML = '<tr><td colspan="7" class="empty-state">📭 Aucune réservation trouvée</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="8" class="empty-state">📭 Aucune réservation trouvée</td></tr>';
                 return;
             }
+            const isAnnulee = r => r.statut === 'ANNULEE';
             tbody.innerHTML = reservations.map(r => `
                 <tr>
                     <td style="color:var(--gold);font-weight:600">#${r.id}</td>
-                    <td>${r.client_id}</td><td>Table ${r.table_id}</td>
-                    <td>${r.date}</td><td>${r.heure}</td>
+                    <td>${r.client_id}</td>
+                    <td>Table ${r.table_id}</td>
+                    <td>${r.date}</td>
+                    <td>${r.heure}</td>
                     <td>${r.nb_personnes} pers.</td>
                     <td><span class="badge ${r.statut}">${r.statut.replace('_', ' ')}</span></td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn-edit ${isAnnulee(r) ? 'btn-disabled' : ''}"
+                                onclick='ouvrirModal(${JSON.stringify(r)})'
+                                ${isAnnulee(r) ? 'disabled' : ''}>✏️ Modifier</button>
+                            <button class="btn-cancel ${isAnnulee(r) ? 'btn-disabled' : ''}"
+                                onclick="demanderAnnulation(${r.id})"
+                                ${isAnnulee(r) ? 'disabled' : ''}>
+                                ✕ Annuler
+                            </button>
+                        </div>
+                    </td>
                 </tr>
             `).join('');
         } catch (e) {
-            document.getElementById('reservations-body').innerHTML = '<tr><td colspan="7" class="empty-state">⚠️ Impossible de contacter le serveur</td></tr>';
+            document.getElementById('reservations-body').innerHTML = '<tr><td colspan="8" class="empty-state">⚠️ Impossible de contacter le serveur</td></tr>';
         }
+    }
+
+    function ouvrirModal(r) {
+        document.getElementById('edit-id').value           = r.id;
+        document.getElementById('edit-date').value         = r.date;
+        document.getElementById('edit-heure').value        = r.heure;
+        document.getElementById('edit-nb-personnes').value = r.nb_personnes;
+        document.getElementById('edit-statut').value       = r.statut;
+        document.getElementById('edit-table').value        = r.table_id;
+        document.getElementById('modal-edit').classList.add('open');
+    }
+
+    function fermerModal() {
+        document.getElementById('modal-edit').classList.remove('open');
+    }
+
+    async function sauvegarderModification() {
+        const id  = document.getElementById('edit-id').value;
+        const btn = document.getElementById('btn-save');
+        btn.disabled = true;
+        btn.textContent = 'Enregistrement...';
+
+        const payload = {
+            date:         document.getElementById('edit-date').value,
+            heure:        document.getElementById('edit-heure').value,
+            nb_personnes: parseInt(document.getElementById('edit-nb-personnes').value),
+            statut:       document.getElementById('edit-statut').value,
+            table_id:     parseInt(document.getElementById('edit-table').value),
+        };
+
+        try {
+            const res = await fetch(`http://localhost:8083/api/reservations/${id}/`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            });
+
+            if (res.ok) {
+                fermerModal();
+                afficherToast('✔ Réservation modifiée avec succès', 'success');
+                chargerReservations();
+            } else {
+                const err = await res.json();
+                afficherToast('Erreur : ' + (err.message || res.status), 'error');
+            }
+        } catch (e) {
+            afficherToast('⚠️ Impossible de contacter le serveur', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '💾 Enregistrer';
+        }
+    }
+
+    function demanderAnnulation(id) {
+        reservationAnnuler = id;
+        document.getElementById('confirm-id-label').textContent = '#' + id;
+        document.getElementById('confirm-annulation').classList.add('open');
+    }
+
+    function fermerConfirm() {
+        reservationAnnuler = null;
+        document.getElementById('confirm-annulation').classList.remove('open');
+    }
+
+    async function confirmerAnnulation() {
+        if (!reservationAnnuler) return;
+        const id  = reservationAnnuler;
+        const btn = document.getElementById('btn-confirm-oui');
+        btn.disabled = true;
+        btn.textContent = 'Annulation...';
+
+        try {
+            const res = await fetch(`http://localhost:8083/api/reservations/${id}/`, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + token
+                }
+            });
+
+            if (res.ok) {
+                fermerConfirm();
+                afficherToast('✔ Réservation #' + id + ' annulée', 'success');
+                chargerReservations();
+            } else {
+                const err = await res.json();
+                afficherToast('Erreur : ' + (err.message || res.status), 'error');
+            }
+        } catch (e) {
+            afficherToast('⚠️ Impossible de contacter le serveur', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.textContent = 'Oui, annuler';
+        }
+    }
+
+    function afficherToast(msg, type) {
+        const t = document.getElementById('toast');
+        t.textContent = msg;
+        t.className = 'toast ' + type;
+        t.classList.add('show');
+        setTimeout(() => t.classList.remove('show'), 3500);
     }
 
     function resetFiltres() {
@@ -171,6 +460,14 @@
         localStorage.clear();
         window.location.href = 'login.html';
     }
+
+    // Fermer modals en cliquant dehors
+    document.getElementById('modal-edit').addEventListener('click', function(e) {
+        if (e.target === this) fermerModal();
+    });
+    document.getElementById('confirm-annulation').addEventListener('click', function(e) {
+        if (e.target === this) fermerConfirm();
+    });
 
     chargerReservations();
 </script>
