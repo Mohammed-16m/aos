@@ -3,3 +3,4 @@ djangorestframework
 python-decouple
 requests
 django-cors-headers
+PyJWT
